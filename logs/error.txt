@@ -1,0 +1,40 @@
+﻿Error: Invalid option.
+
+Specifically: testError
+
+Call stack:
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+> Auto-execute
+
+Error: Invalid option.
+
+Specifically: testError
+
+Call stack:
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+> Auto-execute
+
+Error: Invalid option.
+
+Specifically: testError
+
+Call stack:
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+> Auto-execute
+
+Error: Invalid option.
+
+Specifically: testError
+
+Call stack:
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+> Auto-execute
+

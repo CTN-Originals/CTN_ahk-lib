@@ -1,0 +1,99 @@
+/** 
+ * A collection of utilities for working with objects
+ * - `isObject` - Returns true if the object is an object, false otherwise
+ * - `hasKey` - Returns the value of the key if it exists, false otherwise
+ * - `keys` - Returns an array of keys from the object
+ * - `values` - Returns an array of values from the object
+*/
+class ObjectUtilities {
+	/** 
+	 * @param {Object} obj The object to check
+	 * @returns {Boolean} True if the object is an object, false otherwise
+	*/
+	isObject(obj) {
+		return (isObject(obj) && Type(obj) != "Array")
+	}
+
+	/** 
+	 * @param {Object} obj The object to retrieve the values from
+	 * @param {String} key The key to check for
+	 * @returns {`Any`} The value of the key if it exists, false otherwise
+	*/
+	hasKey(obj, key) {
+		for k, value in obj {
+			if (k == key) {
+				return obj[key]
+			}
+		}
+		return false
+	}
+
+	/** 
+	 * @param {Object} obj The object to retrieve the keys from
+	 * @returns {Array} An array of keys from the object
+	*/
+	keys(obj) {
+		out := []
+		keys := obj.OwnProps()
+		for key, v in keys {
+			out.Push(key)
+		}
+		return out
+	}
+
+	/** 
+	 * @param {Object} obj The object to retrieve the values from
+	 * @returns {Array} An array of values from the object
+	*/
+	values(obj) {
+		out := []
+		for k in obj.OwnProps() {
+			out.Push(obj[k])
+		}
+		return out
+	}
+
+	/** 
+	 * @param {Object} obj The object to stringify
+	 * @param {Number} indent The number of indents to use
+	 * @param {String} indentString The string to use for indents
+	 * @returns {String} A string representation of the object
+	*/
+	stringify(obj, indent := 0, indentString := "  ") {
+		out := StrUtils.repeat(indentString, indent) "{`n"
+
+		keys := this.keys(obj)
+
+		for k, v in keys {
+			key := keys[k]
+			value := obj.%key%
+			out .= StrUtils.repeat(indentString, indent + 1) key ": "
+			if (ObjUtils.isObject(value)) {
+				out .= this.stringify(value, indent + 1, indentString)
+			} 
+			else if (ArrUtils.isArray(value)) {
+				out .= ArrUtils.stringify(value, indent + 1, indentString)
+			}
+			else {
+				out .= value
+			}
+			out .= ",`n"
+		}
+		out .= StrUtils.repeat(indentString, indent) "}"
+		return out
+	}
+}
+
+/** 
+ * A collection of utilities for working with objects
+ * - `isObject` - Returns true if the object is an object, false otherwise
+ * - `keys` - Returns an array of keys from the object
+ * - `hasKey` - Returns the value of the key if it exists, false otherwise
+ * - `values` - Returns an array of values from the object
+*/
+class ObjUtils extends ObjectUtilities {
+}
+
+ObjectUtilities.Base := ObjectUtilities()
+
+; OutputDebug(ObjectUtilities.keys({a: 1, b: 2, c: 3})[2] '`n')
