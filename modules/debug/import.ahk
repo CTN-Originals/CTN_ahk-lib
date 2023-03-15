@@ -1,0 +1,1 @@
+#Include console\import.ahk
