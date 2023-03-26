@@ -8,6 +8,7 @@ OnError ErrorHandler
 Persistent(true)
 
 
+
 Global ui := Gui()
 Global uiSettings := UISettingsData()
 ui.BackColor := '181818'
@@ -20,7 +21,7 @@ MyBtn.OnEvent("Click", MyButtonFunc)
 OutputDebug(uiSettings.getWindowMatrix())
 
 orignalFocusedWin := WinGetID("A") ; Get the ID of the active window
-ui.Show(uiSettings.getWindowMatrix())
+; ui.Show(uiSettings.getWindowMatrix())
 WinActivate(orignalFocusedWin) ; Activate the original window
 return
 
