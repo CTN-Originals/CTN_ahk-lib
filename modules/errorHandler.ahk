@@ -1,5 +1,5 @@
 
-ErrorHandler(Error, *) {
+ErrorHandler(Error, exit := true, *) {
 	stdErr := "Error: {}`n`nSpecifically: {}`n`nCall stack:`n"
 	stdErr := Format(stdErr, Error.Message, Error.Extra)
 	stdErr .= RegExReplace(Error.Stack, " \((\d+)\)", ":$1")
@@ -8,5 +8,7 @@ ErrorHandler(Error, *) {
 	; 	DirCreate("logs")
 	; }
 	try FileAppend stdErr "`n", "**", "UTF-8"
-	ExitApp 2
+	if (exit) {
+		ExitApp 2
+	}
 }

@@ -11,6 +11,10 @@ class ObjectUtilities {
 	 * @returns {Boolean} True if the object is an object, false otherwise
 	*/
 	isObject(obj) {
+		try obj.OwnProps()
+		catch {
+			return false
+		}
 		return (isObject(obj) && Type(obj) != "Array")
 	}
 
@@ -33,6 +37,9 @@ class ObjectUtilities {
 	 * @returns {Array} An array of keys from the object
 	*/
 	keys(obj) {
+		if (!this.isObject(obj)) {
+			return []
+		}
 		out := []
 		keys := obj.OwnProps()
 		for key, v in keys {

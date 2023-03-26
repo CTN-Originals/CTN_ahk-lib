@@ -1,11 +1,14 @@
 
 class UISettingsData {
 	__New() {
+		name := '',
 		this.window := {
 			x: 1940,
 			y: 460,
 			width: 500,
 			height: 200,
+
+			backgroundColor: '181818',
 
 			monitorIndex: 2,
 			screenPosition: "BottomLeft", ; Unset - Centered - TopLeft - TopRight - BottomLeft - BottomRight
@@ -16,6 +19,10 @@ class UISettingsData {
 	}
 
 	Init() {
+		this.Validate()
+	}
+
+	Validate() {
 		if (this.window.screenPosition != "Unset") {
 			screenMatrix := GetScreenMatrix(this.window.monitorIndex)
 			screenMatrix.height -= 80 ; Remove taskbar height
@@ -42,6 +49,14 @@ class UISettingsData {
 
 	getWindowMatrix() {
 		return "x" this.window.x " y" this.window.y " w" this.window.width " h" this.window.height
+	}
+
+	showWindow(ui) {
+		focus := WinGetClass("A")
+		this.Validate()
+		ui.Show(this.getWindowMatrix())
+		if WinExist('ahk_class' focus)
+			WinActivate
 	}
 }
 
