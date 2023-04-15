@@ -57,10 +57,23 @@ class ConsoleInstance extends ConsoleBase {
 			out .= Type(message) ' ' ObjUtils.stringify(message) '`n'
 		} 
 		else {
-			return message
+			out := message
 		}
 
+		this.appendToLog(out)
 		return out
+	}
+
+	appendToLog(message) {
+		GeneralUtillities.ValidatePath('logs\console.txt')
+		try {
+			FileAppend(message '`n', 'logs\console.txt')
+			OutputDebug('Writing console log file`n')
+		}
+		catch Error as e {
+			OutputDebug('Error writing console log file`n')
+			ErrorHandler(e, false)
+		}
 	}
 
 

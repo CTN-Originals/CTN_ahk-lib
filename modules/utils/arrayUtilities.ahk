@@ -29,6 +29,16 @@ class ArrayUtilities {
 	}
 
 	/** 
+	 * @param {Array} arr The array to check
+	 * @param {Any} item The item to check for
+	 * @return {Boolean} True if the item is in the array, false otherwise
+	*/
+	contains(arr, item) {
+		this._validate(arr)
+		return (this.indexOf(arr, item) != -1)
+	}
+
+	/** 
 	 * @param {Array} arr The array to join together
 	 * @param {String} separator The separator to use between items
 	 * @return {String} The joined array
@@ -63,7 +73,21 @@ class ArrayUtilities {
 	stringify(arr, indent := 0, indentString := '  ') {
 		this._validate(arr)
 		ind := (lvl := indent) => StrUtils.repeat(indentString, lvl)
-		itemBreak := (lvl := indent) => (arr.Length > 3) ? '`n' ind(lvl) : ' '
+
+		oneLiner := true ; if the array can be printed on one line
+		if (arr.Length <= 3) {
+			for i in arr {
+				if (StrSplit(i).Length > 20) { ; if the item is too long to be on one line
+					oneLiner := false
+					break
+				}
+			}
+		}
+		else {
+			oneLiner := false
+		}
+		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
+
 		out := '['
 		for i in arr {
 			if (out != '[') {

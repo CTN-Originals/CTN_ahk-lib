@@ -1,40 +1,22 @@
-﻿Error: Invalid option.
+---- 15-04 2023 | 02:02:39 ----
 
-Specifically: testError
-
+Error: (3) The system cannot find the path specified.
+Specifically: 
 Call stack:
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\CTN_ahk-lib\entry.ahk:10
+   : [FileAppend] FileAppend('', 'x/y/z/test.txt')
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\CTN_ahk-lib\entry.ahk:10
+   : [] FileAppend('', 'x/y/z/test.txt')
 > Auto-execute
 
-Error: Invalid option.
 
-Specifically: testError
-
+Error: This variable has not been assigned a value.
+Specifically: global Paradox
 Call stack:
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
+
+C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\CTN_ahk-lib\entry.ahk:14
+   : [] Paradox()
 > Auto-execute
 
-Error: Invalid option.
-
-Specifically: testError
-
-Call stack:
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
-> Auto-execute
-
-Error: Invalid option.
-
-Specifically: testError
-
-Call stack:
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Prototype.__New] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [Gui.Call] ui := Gui('testError', 'Main')
-C:\Users\CTN\Documents\CTN\Programming\ahk\Projects\AHK-DebugUtilities\main.ahk:20 : [] ui := Gui('testError', 'Main')
-> Auto-execute
 

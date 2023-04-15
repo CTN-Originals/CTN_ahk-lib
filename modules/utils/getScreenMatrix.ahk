@@ -1,21 +1,3 @@
-; MonitorCount := MonitorGetCount()
-; MonitorPrimary := MonitorGetPrimary()
-; MsgBox "Monitor Count:`t" MonitorCount "`nPrimary Monitor:`t" MonitorPrimary
-; Loop MonitorCount
-; {
-;     MonitorGet A_Index, &L, &T, &R, &B
-;     MonitorGetWorkArea A_Index, &WL, &WT, &WR, &WB
-;     MsgBox
-;     (
-;         "Monitor:`t#" A_Index "
-;         Name:`t" MonitorGetName(A_Index) "
-;         Left:`t" L " (" WL " work)
-;         Top:`t" T " (" WT " work)
-;         Right:`t" R " (" WR " work)
-;         Bottom:`t" B " (" WB " work)"
-;     )
-; }
-
 class SystemMonitorDataClass {
 	__New() {
 		this.MonitorCount := MonitorGetCount()
@@ -27,6 +9,18 @@ class SystemMonitorDataClass {
 			data := {
 				name: MonitorGetName(A_Index),
 				index: A_Index,
+				rect: {
+					x: L,
+					y: T,
+					width: R - L,
+					height: B - T,
+				},
+				workRect: {
+					x: WL,
+					y: WT,
+					width: WR - WL,
+					height: WB - WT,
+				},
 				left: L,
 				top: T,
 				right: R,
@@ -42,11 +36,21 @@ class SystemMonitorDataClass {
 	}
 	data {
 		get {
-			return this
+			return this.MonitorData
+		}
+	}
+	GetDataByMonitorIndex(index) {
+		Loop this.MonitorData.length {
+			if (this.MonitorData[A_Index].index == index) {
+				return this.MonitorData[A_Index]
+			}
 		}
 	}
 }
 
-; class systemMonitorData extends SystemMonitorDataClass {
-; }
-Global systemMonitorData := SystemMonitorDataClass()
+class systemMonitorData extends SystemMonitorDataClass {
+}
+
+; #Include <utils\import>
+; console.log(SystemMonitorData())
+; Global SystemMonitorData := SystemMonitorDataClass
