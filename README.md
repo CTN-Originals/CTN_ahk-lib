@@ -13,8 +13,8 @@ This AutoHotkey library adds some general functionality to the language and tool
 To use this library, simply download the entire repository, store it either in your AutoHotkey\lib folder or store it in a project. 
 Now you can include it in your AutoHotkey script using the `#Include` directive:
 
-```ahk2
-	#Include lib\CTN_ahk-lib\import.ahk
+```ahk
+#Include lib\CTN_ahk-lib\import.ahk
 ```
 
 ## Documentation
@@ -23,7 +23,6 @@ Comming Soon
 ## Contributing
 If you have any suggestions or find a bug, please feel free to open an issue or a pull request on GitHub.
 
-- - -
 - - -
 
 
