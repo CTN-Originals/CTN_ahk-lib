@@ -4,6 +4,7 @@
  * - `indexOf` - Returns the index of the item in the array, or -1 if not found
  * - `join` - Joins the array together with the specified separator
  * - `cleanUp` - Removes empty items from the array
+ * - `contains` - Returns true if the item is in the array, false otherwise
 */
 class ArrayUtilities {
 	/** 
@@ -59,7 +60,7 @@ class ArrayUtilities {
 	 * @param {Array} arr The array to clean up
 	 * @return {Array} The cleaned up array
 	*/
-	cleanUp(&arr) {
+	cleanUp(arr) {
 		this._validate(arr)
 		out := []
 		for i in arr {
