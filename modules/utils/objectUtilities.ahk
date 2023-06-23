@@ -6,6 +6,11 @@
  * - `values` - Returns an array of values from the object
 */
 class ObjectUtilities {
+	static recursion := {}
+	static recursionExeptions := [
+		"Object",
+		"Array"
+	]
 	/** 
 	 * @param {Object} obj The object to check
 	 * @returns {Boolean} True if the object is an object, false otherwise
@@ -63,6 +68,8 @@ class ObjectUtilities {
 		return out
 	}
 
+	
+
 	/** 
 	 * @param {Object} obj The object to stringify
 	 * @param {Number} indent The number of indents to use
@@ -70,33 +77,72 @@ class ObjectUtilities {
 	 * @returns {String} A string representation of the object
 	*/
 	stringify(obj, indent := 0, indentString := "  ") {
-		out := ''
+		out := []
 		if (this.keys(obj).Length > 0) {
-			out := StrUtils.repeat(indentString, indent - 1) "{`n"
+			out.Push(StrUtils.repeat(indentString, indent - 1) "{`n")
 		}
 		else {
-			out := StrUtils.repeat(indentString, indent - 1) "{"
+			out.Push(StrUtils.repeat(indentString, 0) "{")
 		}
 
 		keys := this.keys(obj)
 
 		for k, v in keys {
+			line := ''
 			key := keys[k]
 			value := obj.%key%
-			out .= StrUtils.repeat(indentString, indent + 1) key ": "
+			line .= StrUtils.repeat(indentString, indent + 1) key ": "
 			if (ObjUtils.isObject(value)) {
-				out .= this.stringify(value, indent + 1, indentString)
-			} 
+				if (value.Base.__Class && !ArrayUtilities.contains(this.recursionExeptions, value.Base.__Class)) {
+					if (this.hasKey(this.recursion, value.Base.__Class)) {
+						this.recursion.%value.Base.__Class%.count += 1
+						this.recursion.%value.Base.__Class%.keys.%key% := this.recursion.%value.Base.__Class%.keys.%key% + 1
+						if (this.recursion.%value.Base.__Class%.count < 10) {
+							line .= this.stringify(value, indent + 1, indentString)
+						}
+						else {
+							line := StrUtils.repeat(indentString, indent + 1) key ': [Recursion overflow]`n'
+							out.Push(line)
+						}
+					}
+					else {
+						this.recursion.%value.Base.__Class% := {count: 1, keys: {%key%: 1}}
+					}
+					; console.log(this.recursion)
+				}
+				else {
+					line .= this.stringify(value, indent + 1, indentString)
+				}
+			}
 			else if (ArrUtils.isArray(value)) {
-				out .= ArrUtils.stringify(value, indent + 1, indentString)
+				line .= ArrUtils.stringify(value, indent + 1, indentString)
 			}
 			else {
-				out .= value
+				line .= value
 			}
-			out .= ",`n"
+
+			if (this.keys(obj)[this.keys(obj).Length] != key) { ;? Check if this is the last key of the object
+				line .= ",`n"
+			}
+			else {
+				line .= "`n"
+			}
+
+			if (this.hasKey(this.recursion, value.Base.__Class)) {
+				this.recursion.%value.Base.__Class%.count += 1
+				this.recursion.%value.Base.__Class%.keys.%key% := this.recursion.%value.Base.__Class%.keys.%key% + 1
+				if (this.recursion.%value.Base.__Class%.count < 10) {
+					line .= this.stringify(value, indent + 1, indentString)
+				}
+				else {
+					continue
+				}
+			}
+			out.Push(line)
 		}
-		out .= StrUtils.repeat(indentString, indent) "}"
-		return out
+		out.Push(StrUtils.repeat(indentString, indent) "}")
+		this.recursionCount := {}
+		return ArrayUtilities.join(out, '')
 	}
 }
 

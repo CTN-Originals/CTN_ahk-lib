@@ -78,6 +78,9 @@ class ArrayUtilities {
 		oneLiner := true ; if the array can be printed on one line
 		if (arr.Length <= 3) {
 			for i in arr {
+				if (ObjectUtilities.isObject(i)) {
+					i := ObjectUtilities.stringify(i)
+				}
 				if (StrSplit(i).Length > 20) { ; if the item is too long to be on one line
 					oneLiner := false
 					break
@@ -95,7 +98,13 @@ class ArrayUtilities {
 				out .= ','
 			}
 			if (this.isArray(i)) {
-				out .= this.stringify(i, indent + 1, indentString)
+				out .= '[recurse] '
+				try {
+					out .= this.stringify(i, indent + 1, indentString)
+				}
+				catch {
+					console.log('Cant recurse more')
+				}
 			} 
 			else if (ObjUtils.isObject(i)) {
 				out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString)

@@ -2,6 +2,7 @@
 class UISettingsData {
 	__New(ui := Gui()) {
 		this.gui := ui
+		this.title := ''
 		this.window := {
 			x: 1940,
 			y: 460,
