@@ -70,7 +70,13 @@ class ObjectUtilities {
 	 * @returns {String} A string representation of the object
 	*/
 	stringify(obj, indent := 0, indentString := "  ") {
-		out := StrUtils.repeat(indentString, indent) "{`n"
+		out := ''
+		if (this.keys(obj).Length > 0) {
+			out := StrUtils.repeat(indentString, indent - 1) "{`n"
+		}
+		else {
+			out := StrUtils.repeat(indentString, indent - 1) "{"
+		}
 
 		keys := this.keys(obj)
 
