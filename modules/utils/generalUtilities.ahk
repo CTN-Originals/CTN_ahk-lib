@@ -8,7 +8,7 @@ class GeneralUtillities {
 	 * @return void
 	*/
 	ValidatePath(path, relativeTo := A_ScriptDir) {
-		OutputDebug('Validating path: ' path ' relative to: ' relativeTo '`n')
+		; OutputDebug('Validating path: ' path ' relative to: ' relativeTo '`n')
 		path := StrReplace(path, '/', '\')
 		split := StrSplit(path, '\')
 		file := split[split.Length]
@@ -16,18 +16,18 @@ class GeneralUtillities {
 		currentDirPath := ''
 	
 		for dir in dirPath {
-			OutputDebug('Checking directory: ' relativeTo '\' currentDirPath '\' dir)
+			; OutputDebug('Checking directory: ' relativeTo '\' currentDirPath '\' dir '`n`n')
 			if (!DirExist(relativeTo '\' dir)) {
 				DirCreate(relativeTo '\' dir)
 				currentDirPath := currentDirPath '\' dir
-				OutputDebug('Created directory: ' relativeTo '\' currentDirPath)
+				; OutputDebug('Created directory: ' relativeTo '\' currentDirPath)
 			}
 			else {
 				currentDirPath := currentDirPath '\' dir
 			}
 		}
 		if (!FileExist(relativeTo '\' path)) {
-			OutputDebug('Created file: ' relativeTo '\' path)
+			; OutputDebug('Created file: ' relativeTo '\' path)
 			FileAppend('', relativeTo '\' path)
 		}
 	}
