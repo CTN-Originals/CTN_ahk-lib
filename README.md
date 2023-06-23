@@ -37,12 +37,9 @@ MyConsole.log("Hello, world!", {prefix: {enable: true, text: "INFO"}})
 
 By default, the logger will write to a log file located at `logs\console.txt`.
 
+## ObjectUtilities & ArrayUtilities
+> You can find the documentation [here]()
 ---
-## ArrayUtilities
-> Comming soon
----
-## ObjectUtilities
-> Comming soon
 
 # Contributing
 If you have any suggestions or find a bug, please feel free to open an issue or a pull request on GitHub.
