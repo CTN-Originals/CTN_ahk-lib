@@ -1,4 +1,5 @@
 ; This file is for testing perposes
+; It is not part of the main program
 #Include import.ahk
 
 #SingleInstance Force
@@ -6,15 +7,6 @@
 #ErrorStdOut 'UTF-8'
 OnError ErrorHandler
 Persistent(true)
-
-try FileAppend('', 'x/y/z/test.txt')
-catch Error as e {
-	ErrorHandler(e, false)
-}
-try Paradox()
-catch Error as e {
-	ErrorHandler(e, false)
-}
 
 Global ui := Gui()
 Global uiSettings := UISettingsData()
