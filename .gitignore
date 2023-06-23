@@ -1,4 +1,4 @@
 .vscode
 .editor
 **/private.**
-logs
+**/logs/**
