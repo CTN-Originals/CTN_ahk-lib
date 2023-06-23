@@ -38,7 +38,7 @@ MyConsole.log("Hello, world!", {prefix: {enable: true, text: "INFO"}})
 By default, the logger will write to a log file located at `logs\console.txt`.
 
 ## ObjectUtilities & ArrayUtilities
-> You can find the documentation [here]()
+> You can find the documentation [here](https://github.com/CTN-Originals/CTN_ahk-lib/tree/main/modules/utils)
 ---
 
 # Contributing
