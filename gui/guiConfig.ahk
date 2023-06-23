@@ -1,7 +1,7 @@
 
 class UISettingsData {
-	__New() {
-		name := '',
+	__New(ui := Gui()) {
+		this.gui := ui
 		this.window := {
 			x: 1940,
 			y: 460,
@@ -11,8 +11,8 @@ class UISettingsData {
 			backgroundColor: '181818',
 
 			monitorIndex: 2,
-			screenPosition: "BottomLeft", ; Unset - Centered - TopLeft - TopRight - BottomLeft - BottomRight
-			toolbarHeight: 30
+			screenPosition: "bottomLeft", ;* unset - center - topLeft - topRight - bottomLeft - bottomRight
+			toolbarHeight: 30 ;? the height of the toolbar (if any) in pixels (the top bar with the close button)
 		}
 
 		this.Init()
@@ -23,39 +23,61 @@ class UISettingsData {
 	}
 
 	Validate() {
-		if (this.window.screenPosition != "Unset") {
+		if (this.window.screenPosition != "unset") {
 			screenMatrix := GetScreenMatrix(this.window.monitorIndex)
 			screenMatrix.height -= 80 ; Remove taskbar height
 			win := this.window
 			win.height += win.toolbarHeight
-			if (win.screenPosition == "Centered") {
+			if (win.screenPosition == "center") {
 				win.x := (screenMatrix.width / 2) - (win.width / 2)
 				win.y := (screenMatrix.height / 2) - (win.height / 2)
-			} else if (win.screenPosition == "TopLeft") {
+			} else if (win.screenPosition == "topLeft") {
 				win.x := (win.monitorIndex > 1) ? (screenMatrix.width / 2) : 0
 				win.y := 0
-			} else if (win.screenPosition == "TopRight") {
+			} else if (win.screenPosition == "topRight") {
 				win.x := screenMatrix.width - win.width
 				win.y := 0
-			} else if (win.screenPosition == "BottomLeft") {
+			} else if (win.screenPosition == "bottomLeft") {
 				win.x := (win.monitorIndex > 1) ? (screenMatrix.width / 2) : 0
 				win.y := screenMatrix.height - win.height
-			} else if (win.screenPosition == "BottomRight") {
+			} else if (win.screenPosition == "bottomRight") {
 				win.x := screenMatrix.width - win.width
 				win.y := screenMatrix.height - win.height
 			}
 		}
 	}
 
+	;#region Getters
 	getWindowMatrix() {
 		return "x" this.window.x " y" this.window.y " w" this.window.width " h" this.window.height
 	}
+	;#endregion
 
-	showWindow(ui) {
-		focus := WinGetClass("A")
+	;#region Setters
+	setWindowSize(width, height) {
+		this.window.width := width
+		this.window.height := height
+	}
+
+	setWindowPosition(x, y) {
+		this.window.x := x
+		this.window.y := y
+	}
+	;#endregion
+
+	applySettings() {
+		this.gui.BackColor := this.window.backgroundColor
+		this.gui.Move(this.window.x, this.window.y, this.window.width, this.window.height)
+	}
+
+	showWindow() {
+		focus := WinGetClass("A") ;? Get the class of the window that is currently active
+
 		this.Validate()
-		ui.Show(this.getWindowMatrix())
-		if WinExist('ahk_class' focus)
+		this.applySettings()
+		this.gui.Show(this.getWindowMatrix())
+
+		if WinExist('ahk_class' focus) ;? Restore focus to the window that was active before
 			WinActivate
 	}
 }
