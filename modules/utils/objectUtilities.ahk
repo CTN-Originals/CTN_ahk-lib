@@ -24,9 +24,12 @@ class ObjectUtilities {
 	 * @returns {`Any`} The value of the key if it exists, false otherwise
 	*/
 	hasKey(obj, key) {
-		for k, value in obj {
+		if (!this.isObject(obj)) {
+			return false
+		}
+		for k, v in obj.OwnProps() {
 			if (k == key) {
-				return obj[key]
+				return obj.%k%
 			}
 		}
 		return false
@@ -55,7 +58,7 @@ class ObjectUtilities {
 	values(obj) {
 		out := []
 		for k in obj.OwnProps() {
-			out.Push(obj[k])
+			out.Push(obj.%k%)
 		}
 		return out
 	}
