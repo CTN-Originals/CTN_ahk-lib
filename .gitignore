@@ -1,4 +1,5 @@
 .vscode
 .editor
+tests/**
 **/private.**
 **/logs/**
