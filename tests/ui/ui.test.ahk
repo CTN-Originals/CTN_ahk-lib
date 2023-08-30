@@ -6,3 +6,10 @@
 #ErrorStdOut 'UTF-8'
 OnError ErrorHandler
 
+Persistent(true)
+console.log(' ')
+
+Global ui := UIBase()
+
+console.log(ui)
+
