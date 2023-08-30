@@ -68,21 +68,25 @@ class ObjectUtilities {
 		return out
 	}
 
-	
-
 	/** 
 	 * @param {Object} obj The object to stringify
 	 * @param {Number} indent The number of indents to use
 	 * @param {String} indentString The string to use for indents
 	 * @returns {String} A string representation of the object
 	*/
-	stringify(obj, indent := 0, indentString := "  ") {
+	stringify(obj, indent := 0, indentString := "  ", isValue := false) {
 		out := []
 		if (this.keys(obj).Length > 0) {
-			out.Push(StrUtils.repeat(indentString, indent - 1) "{`n")
+			if (!isValue) {
+				out.Push(StrUtils.repeat(indentString, indent) "{`n")
+			}
+			else {
+				out.Push("{`n")
+			}
 		}
 		else {
-			out.Push(StrUtils.repeat(indentString, 0) "{")
+			return '{ }'
+			; out.Push(StrUtils.repeat(indentString, 0) "{")
 		}
 
 		keys := this.keys(obj)
@@ -98,11 +102,12 @@ class ObjectUtilities {
 						this.recursion.%value.Base.__Class%.count += 1
 						this.recursion.%value.Base.__Class%.keys.%key% := this.recursion.%value.Base.__Class%.keys.%key% + 1
 						if (this.recursion.%value.Base.__Class%.count < 10) {
-							line .= this.stringify(value, indent + 1, indentString)
+							line .= this.stringify(value, indent + 1, indentString, true)
 						}
 						else {
 							line := StrUtils.repeat(indentString, indent + 1) key ': [Recursion overflow]`n'
 							out.Push(line)
+							; continue
 						}
 					}
 					else {

@@ -73,7 +73,7 @@ class ArrayUtilities {
 
 	stringify(arr, indent := 0, indentString := '  ') {
 		this._validate(arr)
-		ind := (lvl := indent) => StrUtils.repeat(indentString, lvl)
+		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
 
 		oneLiner := true ; if the array can be printed on one line
 		if (arr.Length <= 3) {
