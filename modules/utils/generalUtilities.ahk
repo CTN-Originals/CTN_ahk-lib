@@ -3,9 +3,9 @@
 class GeneralUtillities {
 	/** 
 	 * This function will validate a path and create the directories if they don't exist
-	 * @param path The path to validate
+	 * @param path The path to validate (place a '/' or '\' at the end to mark it as a dir and not a file)
 	 * @param relativeTo The path to validate relative to
-	 * @return void
+	 * @return {string} the path
 	*/
 	ValidatePath(path, relativeTo := A_ScriptDir) {
 		; OutputDebug('Validating path: ' path ' relative to: ' relativeTo '`n')
@@ -30,6 +30,8 @@ class GeneralUtillities {
 			; OutputDebug('Created file: ' relativeTo '\' path)
 			FileAppend('', relativeTo '\' path)
 		}
+
+		return relativeTo '\' path
 	}
 }
 
