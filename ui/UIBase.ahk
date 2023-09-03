@@ -1,5 +1,3 @@
-
-
 class UIBase {
 	__New() {
 		this.gui := Gui()
