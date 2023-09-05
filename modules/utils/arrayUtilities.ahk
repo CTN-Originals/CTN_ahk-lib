@@ -44,14 +44,21 @@ class ArrayUtilities {
 	 * @param {String} separator The separator to use between items
 	 * @return {String} The joined array
 	*/
-	join(arr, separator) {
+	join(arr, separator := '', recurse := false) {
 		this._validate(arr)
 		out := ''
 		for i in arr {
 			if (out != '') {
 				out .= separator
 			}
-			out .= i
+			if (Type(i) != 'String') {
+				if (recurse && this.isArray(i)) {
+					out .= '[ ' this.join(i) ' ]'
+				}
+			}
+			else {
+				out .= i
+			}
 		}
 		return out
 	}

@@ -96,7 +96,10 @@ class ObjectUtilities {
 			key := keys[k]
 			value := obj.%key%
 			line .= StrUtils.repeat(indentString, indent + 1) key ": "
-			if (ObjUtils.isObject(value)) {
+			if (Type(value) == 'Gui') {
+				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true)
+			}
+			else if (ObjUtils.isObject(value)) {
 				if (value.Base.__Class && !ArrayUtilities.contains(this.recursionExeptions, value.Base.__Class)) {
 					if (this.hasKey(this.recursion, value.Base.__Class)) {
 						this.recursion.%value.Base.__Class%.count += 1
@@ -148,6 +151,17 @@ class ObjectUtilities {
 		out.Push(StrUtils.repeat(indentString, indent) "}")
 		this.recursionCount := {}
 		return ArrayUtilities.join(out, '')
+	}
+
+	/** 
+	 * @param {Gui} g the gui
+	 * @returns {object} an object that can be enumerated (so just a normal object)
+	*/
+	getGuiObject(g) {
+		return {
+			Title: g.Title,
+			Hwnd: g.Hwnd
+		}
 	}
 }
 

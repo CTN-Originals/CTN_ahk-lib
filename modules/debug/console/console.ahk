@@ -1,4 +1,4 @@
-
+Global recursionLog := false
 class ConsoleBase {
 	__New(name, indentStep, indentChar) {
 		this.name := name
@@ -37,7 +37,7 @@ class ConsoleInstance extends ConsoleBase {
 
 	/** 
 	 * @param {string} message The message to log
-	 * @param {object} options The options to use
+	 * @param {string} options The options to use
 	*/
 	log(message, options*) {
 		out := this._log(message, options)
@@ -49,19 +49,39 @@ class ConsoleInstance extends ConsoleBase {
 
 	_log(message, options*) {
 		out := ''
-		
-		if (ArrUtils.IsArray(message)) {
-			out .=  Type(message) ArrayUtilities.stringify(message) "`n"
-		} 
-		else if (ObjUtils.IsObject(message)) {
-			out .= Type(message) ' ' ObjUtils.stringify(message) '`n'
-		} 
-		else {
-			out := message
+
+		switchMatch := true
+		switch Type(message) {
+			case 'Gui': 
+				out := Type(message) ' ' ObjUtils.stringify(ObjUtils.getGuiObject(message)) "`n"
+			default: 
+				switchMatch := false
 		}
 
+		if (!switchMatch) {
+			if (ArrUtils.IsArray(message)) {
+				out .=  Type(message) ArrUtils.stringify(message) "`n"
+			} 
+			else if (ObjUtils.IsObject(message)) {
+				/** @type {Object} */
+				obj := message
+				out .= Type(obj) ' ' ObjUtils.stringify(obj) '`n'
+			}
+			else {
+				out := message
+			}
+		}
+		
 		this.appendToLog(out)
 		return out
+	}
+
+	/** 
+	 * @param {array} options
+	 * @returns {object} an object with keys for the option name with a value
+	*/
+	_parseOptions(options*) {
+		;TODO
 	}
 
 	appendToLog(message) {
@@ -75,7 +95,6 @@ class ConsoleInstance extends ConsoleBase {
 			ErrorHandler(e, false)
 		}
 	}
-
 
 	incIndentLevel() {
 		this.indentLevel++
@@ -137,9 +156,17 @@ recursion := {
 }
 recursion.children.Push(recursion)
 
+class classLog {
+	__New() {
+		this.foo := 'bar'
+		this.b := 'c'
+		this.a := ['orange', 'banana', 'apple']
+	}
+}
 ; console.log('console: ' console.name ' ' console.settings.indent.step ' ' console.settings.indent.char ' ' console.indentLevel)
 ; console.log(arr)
 ; console.log(obj)
+; console.log({class: classLog()})
 ; console.log(Gui().Base.__Class)
 ; console.log(recursion)
 ; console.log(UISettingsData())

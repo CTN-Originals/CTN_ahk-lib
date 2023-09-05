@@ -11,5 +11,12 @@ console.log(' ')
 
 Global ui := UIBase()
 
-console.log(ui)
+t := 'Title'
+xGui := Gui(, 'test')
+; console.log(xGui)
+; console.log(xGui.%t%)
+; console.log(Type(xGui))
+; console.log(ObjectUtilities.keys(xGui.OwnProps()))
+
+; console.log(ui)
 
