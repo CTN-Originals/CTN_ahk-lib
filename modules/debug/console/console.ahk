@@ -166,7 +166,7 @@ class classLog {
 ; console.log('console: ' console.name ' ' console.settings.indent.step ' ' console.settings.indent.char ' ' console.indentLevel)
 ; console.log(arr)
 ; console.log(obj)
-; console.log({class: classLog()})
+console.log({name: classLog()})
 ; console.log(Gui().Base.__Class)
 ; console.log(recursion)
 ; console.log(UISettingsData())
