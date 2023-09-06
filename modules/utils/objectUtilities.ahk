@@ -72,6 +72,7 @@ class ObjectUtilities {
 	 * @param {Object} obj The object to stringify
 	 * @param {Number} indent The number of indents to use
 	 * @param {String} indentString The string to use for indents
+	 * @param {Boolean} isValue Is this object a value iside another object?
 	 * @returns {String} A string representation of the object
 	*/
 	stringify(obj, indent := 0, indentString := "  ", isValue := false) {
