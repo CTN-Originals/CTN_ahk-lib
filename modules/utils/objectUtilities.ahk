@@ -100,23 +100,8 @@ class ObjectUtilities {
 				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true)
 			}
 			else if (ObjUtils.isObject(value)) {
-				if (value.Base.__Class && !ArrayUtilities.contains(this.recursionExeptions, value.Base.__Class)) {
-					if (this.hasKey(this.recursion, value.Base.__Class)) {
-						this.recursion.%value.Base.__Class%.count += 1
-						this.recursion.%value.Base.__Class%.keys.%key% := this.recursion.%value.Base.__Class%.keys.%key% + 1
-						if (this.recursion.%value.Base.__Class%.count < 10) {
-							line .= this.stringify(value, indent + 1, indentString, true)
-						}
-						else {
-							line := StrUtils.repeat(indentString, indent + 1) key ': [Recursion overflow]`n'
-							out.Push(line)
-							; continue
-						}
-					}
-					else {
-						this.recursion.%value.Base.__Class% := {count: 1, keys: {%key%: 1}}
-					}
-					; console.log(this.recursion)
+				if (value.Base.__Class) {
+					line .= this.stringify(value, indent + 1, indentString, true)
 				}
 				else {
 					line .= this.stringify(value, indent + 1, indentString)
@@ -134,17 +119,6 @@ class ObjectUtilities {
 			}
 			else {
 				line .= "`n"
-			}
-
-			if (this.hasKey(this.recursion, value.Base.__Class)) {
-				this.recursion.%value.Base.__Class%.count += 1
-				this.recursion.%value.Base.__Class%.keys.%key% := this.recursion.%value.Base.__Class%.keys.%key% + 1
-				if (this.recursion.%value.Base.__Class%.count < 10) {
-					line .= this.stringify(value, indent + 1, indentString)
-				}
-				else {
-					continue
-				}
 			}
 			out.Push(line)
 		}
