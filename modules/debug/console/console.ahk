@@ -1,4 +1,5 @@
 Global recursionLog := false
+; Global recursionStorage := []
 class ConsoleBase {
 	__New(name, indentStep, indentChar) {
 		this.name := name
@@ -12,6 +13,7 @@ class ConsoleBase {
 				text: this.name,
 			}
 		}
+		this.recursionStorage := []
 	}
 }
 
@@ -47,7 +49,13 @@ class ConsoleInstance extends ConsoleBase {
 		}
 	}
 
+	
+
 	_log(message, options*) {
+		;? check for recursion
+		this.recursionStorage.Push(message)
+		
+
 		out := ''
 
 		switchMatch := true
@@ -152,9 +160,11 @@ obj := {
 
 recursion := {
 	field: 'val',
-	children: []
+	obj: {},
+	children: [],
 }
-recursion.children.Push(recursion)
+; recursion.children.Push(recursion)
+recursion.obj := recursion
 
 class classLog {
 	__New() {
@@ -166,7 +176,7 @@ class classLog {
 ; console.log('console: ' console.name ' ' console.settings.indent.step ' ' console.settings.indent.char ' ' console.indentLevel)
 ; console.log(arr)
 ; console.log(obj)
-console.log({name: classLog()})
+; console.log({name: classLog()})
 ; console.log(Gui().Base.__Class)
-; console.log(recursion)
+console.log(recursion)
 ; console.log(UISettingsData())

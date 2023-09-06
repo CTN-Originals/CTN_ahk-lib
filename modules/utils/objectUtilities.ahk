@@ -6,7 +6,7 @@
  * - `values` - Returns an array of values from the object
 */
 class ObjectUtilities {
-	static recursion := {}
+	
 	static recursionExeptions := [
 		"Object",
 		"Array"
@@ -67,7 +67,7 @@ class ObjectUtilities {
 		}
 		return out
 	}
-
+	
 	/** 
 	 * @param {Object} obj The object to stringify
 	 * @param {Number} indent The number of indents to use
