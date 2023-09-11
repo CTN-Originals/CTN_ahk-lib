@@ -6,11 +6,13 @@
  * - `values` - Returns an array of values from the object
 */
 class ObjectUtilities {
-	
-	static recursionExeptions := [
-		"Object",
-		"Array"
-	]
+	__New() {
+		this.recursionStorage := []
+	}
+	; static recursionExeptions := [
+	; 	"Object",
+	; 	"Array"
+	; ]
 	/** 
 	 * @param {Object} obj The object to check
 	 * @returns {Boolean} True if the object is an object, false otherwise
@@ -76,6 +78,21 @@ class ObjectUtilities {
 	 * @returns {String} A string representation of the object
 	*/
 	stringify(obj, indent := 0, indentString := "  ", isValue := false) {
+		;? check for recursion
+		recursionDetected := false
+		this.recursionStorage.Push(obj)
+		loop(this.recursionStorage.Length) {
+			i := (this.recursionStorage.length - 0) - A_Index
+			if (i < 1) {
+				continue
+			}
+			target := this.recursionStorage[i]
+			if (obj == target) {
+				;! RECURSION
+				recursionDetected := true
+			}
+		}
+
 		out := []
 		if (this.keys(obj).Length > 0) {
 			if (!isValue) {
@@ -87,7 +104,6 @@ class ObjectUtilities {
 		}
 		else {
 			return '{ }'
-			; out.Push(StrUtils.repeat(indentString, 0) "{")
 		}
 
 		keys := this.keys(obj)
@@ -98,14 +114,17 @@ class ObjectUtilities {
 			value := obj.%key%
 			line .= StrUtils.repeat(indentString, indent + 1) key ": "
 			if (Type(value) == 'Gui') {
-				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true)
+				line .= (recursionDetected) ? ' <recursion> ' : 
+				this.stringify(this.getGuiObject(value), indent + 1, indentString, true)
 			}
 			else if (ObjUtils.isObject(value)) {
 				if (value.Base.__Class) {
-					line .= this.stringify(value, indent + 1, indentString, true)
+					line .= (recursionDetected) ? ' <recursion> ' : 
+					this.stringify(value, indent + 1, indentString, true)
 				}
 				else {
-					line .= this.stringify(value, indent + 1, indentString)
+					line .= (recursionDetected) ? ' <recursion> ' : 
+					this.stringify(value, indent + 1, indentString)
 				}
 			}
 			else if (ArrUtils.isArray(value)) {
@@ -125,6 +144,7 @@ class ObjectUtilities {
 		}
 		out.Push(StrUtils.repeat(indentString, indent) "}")
 		this.recursionCount := {}
+		this.recursionStorage.Pop()
 		return ArrayUtilities.join(out, '')
 	}
 

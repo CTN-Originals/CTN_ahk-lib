@@ -52,10 +52,6 @@ class ConsoleInstance extends ConsoleBase {
 	
 
 	_log(message, options*) {
-		;? check for recursion
-		this.recursionStorage.Push(message)
-		
-
 		out := ''
 
 		switchMatch := true
@@ -158,11 +154,13 @@ obj := {
 	}
 }
 
+
 recursion := {
 	field: 'val',
 	obj: {},
 	children: [],
 }
+obj.someObj.friends.Push(recursion)
 ; recursion.children.Push(recursion)
 recursion.obj := recursion
 
@@ -178,5 +176,5 @@ class classLog {
 ; console.log(obj)
 ; console.log({name: classLog()})
 ; console.log(Gui().Base.__Class)
-console.log(recursion)
+; console.log(recursion)
 ; console.log(UISettingsData())
