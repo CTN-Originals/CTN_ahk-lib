@@ -1,7 +1,12 @@
 class UIBase {
 	__New() {
+		this.name := A_ScriptName
 		this.gui := Gui()
 		this.window := UIWindow()
+	}
+
+	show() {
+		this.window.show(this.gui, this.name)
 	}
 }
 
@@ -11,16 +16,17 @@ class UIWindow {
 		this.y := y
 		this.width := width
 		this.height := height
+
+		this._settings := UIWindowSettings()
 		
 		this._flagDictionary := {
 			width: 'w',
 			height: 'h'
 		}
-
-		this._flags := this.getFlags()
+		this._flags := this._getFlags()
 	}
 
-	getFlags() {
+	_getFlags() {
 		out := []
 		keys := ObjectUtilities.keys(this)
 		flagKeys := ObjectUtilities.keys(this._flagDictionary)
@@ -39,5 +45,37 @@ class UIWindow {
 		}
 
 		return ArrayUtilities.join(out, ' ')
+	}
+
+	/** 
+	 * @param {Gui} targetGui The gui to show
+	 * @param {String} title The title of the gui
+	*/
+	show(targetGui, title := A_ScriptName) {
+		focus := WinGetID("A") ;? Get the class of the window that is currently active
+
+		targetGui.Title := title
+		targetGui.Show(this._flags)
+
+		;? Restore focus to the window that was active before
+		;* Normally useful for testing/creating gui's to return focus to your IDE
+		;! Not recommended after releasing a program to the public
+		;! Default value: returnFocus := !A_IsCompiled | onTopReturnFocus := (returnFocus && !A_IsCompiled)
+		if (this._settings.returnFocus && WinExist(focus)) { 
+			WinActivate(focus)
+
+			;? When focus is returned, show the gui window once again but dont steal focus from the original window
+			;* This is useful when a program (like your IDE) is covering the gui's position
+			if (this._settings.onTopReturnFocus) {
+				targetGui.Opt('+AlwaysOnTop')
+				targetGui.Opt('-AlwaysOnTop')
+			}
+		}
+	}
+}
+class UIWindowSettings {
+	__New() {
+		this.returnFocus := !A_IsCompiled
+		this.onTopReturnFocus := (this.returnFocus && !A_IsCompiled)
 	}
 }
