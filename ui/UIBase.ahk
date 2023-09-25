@@ -2,7 +2,7 @@ class UIBase {
 	__New() {
 		this.name := A_ScriptName
 		this.gui := Gui()
-		this.window := UIWindow()
+		this.window := UIWindow() ;TODO make this into an array or object to hold multiple windows
 	}
 
 	show() {
@@ -16,6 +16,8 @@ class UIWindow {
 		this.y := y
 		this.width := width
 		this.height := height
+		;TODO id
+		;TODO hwnd
 
 		this._settings := UIWindowSettings()
 		
