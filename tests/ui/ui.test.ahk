@@ -12,5 +12,4 @@ console.log(' ')
 Global ui := UIBase()
 
 console.log(ui)
-
 ui.show()
