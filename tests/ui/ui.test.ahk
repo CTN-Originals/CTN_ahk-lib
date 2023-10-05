@@ -11,5 +11,10 @@ console.log(' ')
 
 Global ui := UIBase()
 
-console.log(ui)
+Global inst := ui.getInst(1)
+Global wind := inst.window
+wind.x := 1920 - wind.width - 15
+wind.y := (1080 - 70) - wind.height - 10
+
 ui.show()
+console.log(ui)
