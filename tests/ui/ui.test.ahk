@@ -17,4 +17,5 @@ wind.x := 1920 - wind.width - 15
 wind.y := (1080 - 70) - wind.height - 10
 
 ui.show()
+WinSetTransparent(100, wind.hwnd)
 console.log(ui)
