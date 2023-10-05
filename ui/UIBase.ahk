@@ -46,6 +46,13 @@ class UIWindow {
 		}
 	}
 
+	/** 
+	 * @returns This Hwnd
+	*/
+	__Get() {
+		return this.hwnd
+	}
+
 	_getFlags() {
 		out := []
 		keys := ObjectUtilities.keys(this)

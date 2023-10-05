@@ -19,3 +19,4 @@ wind.y := (1080 - 70) - wind.height - 10
 ui.show()
 WinSetTransparent(100, wind.hwnd)
 console.log(ui)
+console.log(ui.getInst().window.__Get())
