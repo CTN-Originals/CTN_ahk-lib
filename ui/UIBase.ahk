@@ -33,8 +33,8 @@ class UIWindow {
 		this.y := y
 		this.width := width
 		this.height := height
-		;TODO id
-		;TODO hwnd
+		
+		this._hwnd := 0
 
 		this._settings := UIWindowSettings()
 		
@@ -42,7 +42,6 @@ class UIWindow {
 			width: 'w',
 			height: 'h'
 		}
-		this._flags := this._getFlags()
 	}
 
 	_getFlags() {
@@ -73,8 +72,11 @@ class UIWindow {
 	show(targetGui, title := A_ScriptName) {
 		focus := WinGetID("A") ;? Get the class of the window that is currently active
 
+		;TODO if WinExists this._hwnd to prevent opening multiple windows
 		targetGui.Title := title
-		targetGui.Show(this._flags)
+		targetGui.Show(this._getFlags())
+
+		this._hwnd := targetGui.Hwnd
 
 		;? Restore focus to the window that was active before
 		;* Normally useful for testing/creating gui's to return focus to your IDE
