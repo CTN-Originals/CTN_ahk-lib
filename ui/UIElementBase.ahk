@@ -11,10 +11,14 @@ class UIElementBase {
 	__Get(index) {
 		return this.list[index]
 	}
+
+	_registerElement(element) {
+
+	}
 }
 
 class ElementInstance {
-	__New() {
+	__Init() {
 		this.hwnd := 0
 	}
 
@@ -24,7 +28,13 @@ class ElementInstance {
 }
 
 class AddElement {
-	__New(base) {
-		this.base := base
+	__New(elementBase) {
+		this.elementBase := elementBase
+	}
+
+	Button() {
+		element := Button()
+		this.elementBase._registerElement(element)
+		return element
 	}
 }
