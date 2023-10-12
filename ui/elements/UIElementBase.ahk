@@ -1,0 +1,7 @@
+
+
+class UIElementBase {
+	__New() {
+		
+	}
+}

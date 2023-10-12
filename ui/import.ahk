@@ -1,2 +1,1 @@
-#Include guiConfig.ahk
-#Include guiManager.ahk
+#Include 'UIBase.ahk'
