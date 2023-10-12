@@ -2,19 +2,8 @@
 
 class Button extends ElementInstance {
 	__New(x := 10, y := 10, width := 100, height := 30, text := 'Button') {
-		super.__Init()
-		this.x := x
-		this.y := y
-		this.width := width
-		this.height := height
+		super.__Init(x, y, width, height)
 		
 		this.text := text
-
-		this.flagDictionary := {
-			x: 'x',
-			y: 'y',
-			width: 'w',
-			height: 'h',
-		}
 	}
 }

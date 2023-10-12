@@ -176,5 +176,5 @@ class classLog {
 ; console.log(obj)
 ; console.log({name: classLog()})
 ; console.log(Gui().Base.__Class)
-console.log(recursion)
+; console.log(recursion)
 ; console.log(UISettingsData())
