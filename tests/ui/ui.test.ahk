@@ -16,12 +16,14 @@ Global wind := inst.window
 wind.x := 1920 - wind.width - 15
 wind.y := (1080 - 70) - wind.height - 10
 
+console.log('flags: ' getFlags(ui.getInst().window))
 ui.show()
 WinSetTransparent(100, wind.hwnd)
 console.log(ui)
 Global inst := ui.getInst()
-console.log(inst.window.__Get())
+; console.log(inst.window.__Get()) ;? returns the hwnd
 
-Global btn := inst.gui.AddEdit('x10 y10 w100 h30', 'Button')
+; Global btn := inst.gui.AddEdit('x10 y10 w100 h30', 'Button')
+Global btn := inst.elements.Add.Button()
 
-console.log(Type(btn))
+console.log(btn)

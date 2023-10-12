@@ -2,6 +2,7 @@
 
 #Include UIWindow.ahk
 #Include UIElementBase.ahk
+#Include flagDictonary.ahk
 
 class UIBase {
 	__New() {
@@ -31,23 +32,4 @@ class UIInstance {
 	}
 
 	show() => this.window.show(this.gui, this.title)
-}
-
-
-getFlags(obj) {
-	out := []
-	keys := ObjectUtilities.keys(obj)
-	if (!obj.flagDictionary) {
-		throw 'obj does not have a field called "flagDictionary"'
-	}
-	flagKeys := ObjectUtilities.keys(obj.flagDictionary)
-
-	for key in keys {
-		if (ArrayUtilities.indexOf(flagKeys, key) == -1 || obj.%key% == 0) {
-			continue
-		}
-		out.Push(obj.flagDictionary.%key% obj.%key%)
-	}
-
-	return ArrayUtilities.join(out, ' ')
 }
