@@ -143,8 +143,9 @@ class ObjectUtilities {
 			out.Push(line)
 		}
 		out.Push(StrUtils.repeat(indentString, indent) "}")
-		this.recursionCount := {}
-		this.recursionStorage.Pop()
+
+		this.recursionCount := {} ;! do we still need this?
+		this.recursionStorage := [] ;? Clear the list to avoid the recersion detection miss-fire due to back-logging
 		return ArrayUtilities.join(out, '')
 	}
 
