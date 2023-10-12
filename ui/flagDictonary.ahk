@@ -13,14 +13,15 @@ Global flags := {
 
 ;? If the name of the class is not the same as the name of the field in flags, it will be defined here
 Global flagClassPairs := {
-	window: 'UIWindow',
+	window: 'uiwindow',
 }
 
 getFlags(obj) {
 	global
 	out := []
 	keys := ObjectUtilities.keys(obj)
-	field := Type(obj)
+	field := StrLower(Type(obj))
+
 	if (ArrayUtilities.indexOf(ObjectUtilities.keys(flags), field) == -1) {
 		pairIndex := ArrayUtilities.indexOf(ObjectUtilities.values(flagClassPairs), field)
 		if (pairIndex > 0) {
@@ -30,7 +31,7 @@ getFlags(obj) {
 			field := 'default'
 		}
 	}
-	;TODO Optimize this, im sure there is a better way for this
+
 	flagKeys := (field != 'default') ? ObjectUtilities.keys(flags.%field%) : []
 	flagValues := (field != 'default') ? ObjectUtilities.values(flags.%field%) : []
 	flagKeys.Push(ObjectUtilities.keys(flags.default)*)
