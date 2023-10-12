@@ -19,4 +19,9 @@ wind.y := (1080 - 70) - wind.height - 10
 ui.show()
 WinSetTransparent(100, wind.hwnd)
 console.log(ui)
-console.log(ui.getInst().window.__Get())
+Global inst := ui.getInst()
+console.log(inst.window.__Get())
+
+Global btn := inst.gui.AddEdit('x10 y10 w100 h30', 'Button')
+
+console.log(Type(btn))

@@ -1,7 +1,0 @@
-
-
-class UIElementBase {
-	__New() {
-		
-	}
-}

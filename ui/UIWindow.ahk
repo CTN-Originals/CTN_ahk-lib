@@ -24,21 +24,6 @@ class UIWindow {
 		return this.hwnd
 	}
 
-	_getFlags() {
-		out := []
-		keys := ObjectUtilities.keys(this)
-		flagKeys := ObjectUtilities.keys(this.flagDictionary)
-
-		for key in keys {
-			if (ArrayUtilities.indexOf(flagKeys, key) == -1 || this.%key% == 0) {
-				continue
-			}
-			out.Push(this.flagDictionary.%key% this.%key%)
-		}
-
-		return ArrayUtilities.join(out, ' ')
-	}
-
 	/** 
 	 * @param {Gui} targetGui The gui to show
 	 * @param {String} title The title of the gui
@@ -48,7 +33,7 @@ class UIWindow {
 
 		;TODO if WinExists this._hwnd to prevent opening multiple windows
 		targetGui.Title := title
-		targetGui.Show(this._getFlags())
+		targetGui.Show(getFlags(this))
 
 		this.hwnd := targetGui.Hwnd
 
