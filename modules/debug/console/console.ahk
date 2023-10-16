@@ -117,60 +117,60 @@ class console extends ConsoleInstance {
 ConsoleInstance.Base := ConsoleInstance()
 
 
-arr := [1, 2, 3, 4, 5]
-obj := {
-	some: 'thing',
-	another: 'something',
-	anotherthing: 'something else',
-	emptyObj: {},
-	emptyArr: [],
-	guiObj: Gui(),
-	someObj: {
-		fruits: ['apple', 'banana', 'orange'],
-		; vegetables: ['carrot', 'potato', 'tomato'],
-		; hobbies: ['gaming', 'coding', 'reading', 'writing'],
-		friends: [
-			{
-				name: 'John',
-				age: 20,
-				hobbies: ['gaming', 'coding'],
-			},
-			; {
-			; 	name: 'Jane',
-			; 	age: 21,
-			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
-			; },
-			; {
-			; 	name: 'Jack',
-			; 	age: 22,
-			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
-			; },
-			; {
-			; 	name: 'Jill',
-			; 	age: 23,
-			; 	hobbies: ['gaming', 'coding', 'reading'],
-			; },
-		]
-	}
-}
+; arr := [1, 2, 3, 4, 5]
+; obj := {
+; 	some: 'thing',
+; 	another: 'something',
+; 	anotherthing: 'something else',
+; 	emptyObj: {},
+; 	emptyArr: [],
+; 	guiObj: Gui(),
+; 	someObj: {
+; 		fruits: ['apple', 'banana', 'orange'],
+; 		; vegetables: ['carrot', 'potato', 'tomato'],
+; 		; hobbies: ['gaming', 'coding', 'reading', 'writing'],
+; 		friends: [
+; 			{
+; 				name: 'John',
+; 				age: 20,
+; 				hobbies: ['gaming', 'coding'],
+; 			},
+; 			; {
+; 			; 	name: 'Jane',
+; 			; 	age: 21,
+; 			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
+; 			; },
+; 			; {
+; 			; 	name: 'Jack',
+; 			; 	age: 22,
+; 			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
+; 			; },
+; 			; {
+; 			; 	name: 'Jill',
+; 			; 	age: 23,
+; 			; 	hobbies: ['gaming', 'coding', 'reading'],
+; 			; },
+; 		]
+; 	}
+; }
 
 
-recursion := {
-	field: 'val',
-	obj: {},
-	children: [],
-}
-obj.someObj.friends.Push(recursion)
+; recursion := {
+; 	field: 'val',
+; 	obj: {},
+; 	children: [],
+; }
+; obj.someObj.friends.Push(recursion)
 ; recursion.children.Push(recursion)
-recursion.obj := recursion
+; recursion.obj := recursion
 
-class classLog {
-	__New() {
-		this.foo := 'bar'
-		this.b := 'c'
-		this.a := ['orange', 'banana', 'apple']
-	}
-}
+; class classLog {
+; 	__New() {
+; 		this.foo := 'bar'
+; 		this.b := 'c'
+; 		this.a := ['orange', 'banana', 'apple']
+; 	}
+; }
 ; console.log('console: ' console.name ' ' console.settings.indent.step ' ' console.settings.indent.char ' ' console.indentLevel)
 ; console.log(arr)
 ; console.log(obj)

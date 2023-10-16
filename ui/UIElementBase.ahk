@@ -1,4 +1,5 @@
 #Include elements\button.ahk
+#Include elements\text.ahk
 
 class UIElementBase {
 	__New() {
@@ -39,6 +40,11 @@ class AddElement {
 
 	Button() {
 		element := Button()
+		this.elementBase._registerElement(element)
+		return element
+	}
+	Text() {
+		element := Text()
 		this.elementBase._registerElement(element)
 		return element
 	}

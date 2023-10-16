@@ -1,14 +1,42 @@
 ;? This script just holds flag data for different elements
 
+class FlagField {
+	/** 
+	 * @param {String} prefix The string that comes before the value
+	 * @param {String} fieldType Type of this value, default is string, bool would cause the value to apear as the key
+	 * @param {String} prefix The string that comes after the value (for example a color after a "Background" flag)
+	*/
+	__New(prefix, fieldType := 'string', suffix := '') {
+		this.prefix := prefix
+		this.type := fieldType
+		this.suffix := suffix
+	}
+
+	__Get(value := '') {
+		out := ''
+		switch this.type {
+			case 'bool':
+				out := (value) ? '+' this.prefix : '-' this.prefix
+			default:
+				out := this.prefix value this.suffix
+		}
+		return out
+	}
+}
+
 Global flags := {
 	default: {
-		x: 'x',
-		y: 'y',
-		width: 'w',
-		height: 'h',
+		x: FlagField('x'),
+		y: FlagField('y'),
+		width: FlagField('w'),
+		height: FlagField('h'),
 	},
-	window: {}, ;TODO make a way for a bool value to apear as the key not the value in the flags
+	;TODO make a way for a bool value to apear as the key not the value in the flags
+	window: {},
 	button: {},
+	text: {
+		center: FlagField('center', 'bool')
+	}
 }
 
 ;? If the name of the class is not the same as the name of the field in flags, it will be defined here
@@ -18,11 +46,14 @@ Global flagClassPairs := {
 
 getFlags(obj) {
 	global
+	console.log('+obj')
+	console.log(obj)
+	console.log('=obj')
 	out := []
 	keys := ObjectUtilities.keys(obj)
 	field := StrLower(Type(obj))
 
-	if (ArrayUtilities.indexOf(ObjectUtilities.keys(flags), field) == -1) {
+	if (!ObjectUtilities.hasKey(flags, field)) {
 		pairIndex := ArrayUtilities.indexOf(ObjectUtilities.values(flagClassPairs), field)
 		if (pairIndex > 0) {
 			field := ObjectUtilities.keys(flagClassPairs)[pairIndex]
@@ -31,19 +62,18 @@ getFlags(obj) {
 			field := 'default'
 		}
 	}
-
-	flagKeys := (field != 'default') ? ObjectUtilities.keys(flags.%field%) : []
-	flagValues := (field != 'default') ? ObjectUtilities.values(flags.%field%) : []
-	flagKeys.Push(ObjectUtilities.keys(flags.default)*)
-	flagValues.Push(ObjectUtilities.values(flags.default)*)
-
-	for key in keys {
-		flagIndex := ArrayUtilities.indexOf(flagKeys, key)
-		if (flagIndex == -1 || obj.%key% == 0) {
-			continue
-		}
-		out.Push(flagValues[flagIndex] obj.%key%)
+	
+	flagObject := flags.default
+	if (field != 'default') {
+		flagObject := ObjectUtilities.merge(flagObject, flags.%field%, true)
 	}
 
+	for key, fieldDefinition in flagObject.OwnProps() {
+		console.log(key)
+		console.log(fieldDefinition)
+		; console.log(obj.%key%)
+		out.Push(fieldDefinition.__Get(obj.%key%))
+	}
+	flagObject := {}
 	return ArrayUtilities.join(out, ' ')
 }

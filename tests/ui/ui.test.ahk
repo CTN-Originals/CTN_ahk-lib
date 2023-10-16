@@ -15,15 +15,17 @@ Global inst := ui.getInst(1)
 Global wind := inst.window
 wind.x := 1920 + 4
 wind.y := (1080 - 70) - wind.height - 10
-; wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
+wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
 
-; console.log('flags: ' getFlags(ui.getInst().window))
 Global inst := ui.getInst()
+; console.log('flags: ' getFlags(inst.window))
 Global btn := inst.elements.Add.Button()
-; console.log('flags: ' getFlags(btn))
-console.log(btn)
+Global txt := inst.elements.Add.Text()
+console.log('flags: ' getFlags(btn))
+console.log('flags: ' getFlags(txt))
+; console.log(txt)
 ui.show()
-; WinSetTransparent(100, wind.hwnd)
+WinSetTransparent(100, wind.hwnd)
 console.log(ui)
 ; console.log(inst.window.__Get()) ;? returns the hwnd
 

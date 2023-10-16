@@ -6,7 +6,6 @@ class UIWindow {
 		this.height := height
 		
 		this.hwnd := 0
-		this.center := true
 
 		this.settings := UIWindowSettings()
 	}
