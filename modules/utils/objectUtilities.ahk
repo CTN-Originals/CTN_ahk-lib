@@ -69,6 +69,30 @@ class ObjectUtilities {
 		}
 		return out
 	}
+
+	/** 
+	 * @param {Object} obj The Primary object
+	 * @param {Object} merger The object to merge into the primary object
+	*/
+	merge(obj, merger, overridePrimary := false) {
+		if (!this.isObject(obj)) {
+			throw Error('Param is not of type Object', ObjectUtilities.merge, 'obj')
+			return obj
+		}
+		if (!this.isObject(merger)) {
+			throw Error('Param is not of type Object', ObjectUtilities.merge, 'merger')
+			return obj
+		}
+
+		for key in merger.OwnProps() {
+			if (this.hasKey(obj, key) && !overridePrimary) {
+				continue
+			}
+			obj.%key% := merger.%key%
+		}
+
+		return obj
+	}
 	
 	/** 
 	 * @param {Object} obj The object to stringify
