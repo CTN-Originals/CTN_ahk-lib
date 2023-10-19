@@ -46,9 +46,6 @@ Global flagClassPairs := {
 
 getFlags(obj) {
 	global
-	console.log('+obj')
-	console.log(obj)
-	console.log('=obj')
 	out := []
 	keys := ObjectUtilities.keys(obj)
 	field := StrLower(Type(obj))
@@ -63,15 +60,13 @@ getFlags(obj) {
 		}
 	}
 	
-	flagObject := flags.default
+	flagObject := flags.default.Clone()
 	if (field != 'default') {
 		flagObject := ObjectUtilities.merge(flagObject, flags.%field%, true)
+
 	}
 
 	for key, fieldDefinition in flagObject.OwnProps() {
-		console.log(key)
-		console.log(fieldDefinition)
-		; console.log(obj.%key%)
 		out.Push(fieldDefinition.__Get(obj.%key%))
 	}
 	flagObject := {}
