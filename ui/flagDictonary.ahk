@@ -4,12 +4,10 @@ class FlagField {
 	/** 
 	 * @param {String} prefix The string that comes before the value
 	 * @param {String} fieldType Type of this value, default is string, bool would cause the value to apear as the key
-	 * @param {String} prefix The string that comes after the value (for example a color after a "Background" flag)
 	*/
-	__New(prefix, fieldType := 'string', suffix := '') {
+	__New(prefix, fieldType := 'default') {
 		this.prefix := prefix
 		this.type := fieldType
-		this.suffix := suffix
 	}
 
 	__Get(value := '') {
@@ -18,7 +16,7 @@ class FlagField {
 			case 'bool':
 				out := (value) ? '+' this.prefix : '-' this.prefix
 			default:
-				out := this.prefix value this.suffix
+				out := this.prefix value
 		}
 		return out
 	}
@@ -31,7 +29,6 @@ Global flags := {
 		width: FlagField('w'),
 		height: FlagField('h'),
 	},
-	;TODO make a way for a bool value to apear as the key not the value in the flags
 	window: {},
 	button: {},
 	text: {

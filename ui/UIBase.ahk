@@ -28,7 +28,7 @@ class UIInstance {
 		this.title := A_ScriptName
 		this.gui := Gui() ;? the built-in gui object from ahk2 
 		this.window := UIWindow()
-		this.elements := UIElementBase()
+		this.elements := UIElementBase(this)
 	}
 
 	show() => this.window.show(this.gui, this.title)

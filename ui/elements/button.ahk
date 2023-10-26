@@ -5,5 +5,7 @@ class Button extends ElementInstance {
 		super.__Init(x, y, width, height)
 		
 		this.text := text
+
+		this.font := Font()
 	}
 }
