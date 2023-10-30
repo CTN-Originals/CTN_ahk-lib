@@ -15,7 +15,7 @@ Global inst := ui.getInst(1)
 Global wind := inst.window
 wind.x := 1920 + 4
 wind.y := (1080 - 70) - wind.height - 10
-wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
+; wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
 
 Global inst := ui.getInst()
 ; console.log('flags: ' getFlags(inst.window))
@@ -26,18 +26,23 @@ txt.setContent('Hello World')
 ; console.log('flags: ' getFlags(txt))
 ; console.log(txt)
 
+
 inst.gui.SetFont('s20 cRed', 'Impact')
 inst.gui.AddText('x10 y10', 'Hello World!')
 inst.gui.SetFont('s20 cGreen w300', 'Verdana')
 inst.gui.AddText('x10 y+10', 'Hello World!')
 inst.gui.SetFont('s20 cBlue norm bold italic underline strike', '')
 inst.gui.AddText('x10 y+10', 'Hello World!')
+
+
 ui.show()
+inst.gui.Minimize()
 WinSetTransparent(100, wind.hwnd)
+
 console.log(txt)
-console.log('txt'.Base.__Class)
-console.log(!!('txt'.Base.__Class))
-console.log(txt)
+; console.log(txt)
+; console.log(ObjectUtilities.RecursionStorage)
+
 ; console.log(ui)
 ; console.log(inst.window.__Get()) ;? returns the hwnd
 
