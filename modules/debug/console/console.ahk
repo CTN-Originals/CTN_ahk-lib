@@ -155,13 +155,14 @@ ConsoleInstance.Base := ConsoleInstance()
 ; }
 
 
-; recursion := {
-; 	field: 'val',
-; 	obj: {},
-; 	children: [],
-; }
+recursion := {
+	field: 'val',
+	obj: {},
+	children: [],
+}
+recursion.children.Push(recursion)
+
 ; obj.someObj.friends.Push(recursion)
-; recursion.children.Push(recursion)
 ; recursion.obj := recursion
 
 ; class classLog {

@@ -1,3 +1,4 @@
+
 /** 
  * A collection of utilities for working with objects
  * - `isObject` - Returns true if the object is an object, false otherwise
@@ -6,9 +7,27 @@
  * - `values` - Returns an array of values from the object
 */
 class ObjectUtilities {
-	__New() {
-		this.recursionStorage := []
+	; static _recursionStorage := []
+	__Init() {
+		OutputDebug('-------- INIT --------  `n')
+		this._recursionStorage := []
 	}
+	__New() {
+		;* stuff and things?
+	}
+
+	RecursionStorage {
+		get {
+			; console.log('get storage')
+			return this._recursionStorage
+		}
+		set {
+			; console.log('set storage')
+			this._recursionStorage.Push(Value)
+		}
+	}
+
+
 	; static recursionExeptions := [
 	; 	"Object",
 	; 	"Array"
@@ -101,21 +120,9 @@ class ObjectUtilities {
 	 * @param {Boolean} isValue Is this object a value iside another object?
 	 * @returns {String} A string representation of the object
 	*/
-	stringify(obj, indent := 0, indentString := "  ", isValue := false) {
+	stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
 		;? check for recursion
-		recursionDetected := false
-		this.recursionStorage.Push(obj)
-		loop(this.recursionStorage.Length) {
-			i := (this.recursionStorage.length - 0) - A_Index
-			if (i < 1) {
-				continue
-			}
-			target := this.recursionStorage[i]
-			if (obj == target) {
-				;! RECURSION
-				recursionDetected := true
-			}
-		}
+		recursionDetected := this._checkRecursion(obj)
 
 		out := []
 		if (this.keys(obj).Length > 0) {
@@ -131,25 +138,31 @@ class ObjectUtilities {
 		}
 
 		keys := this.keys(obj)
-
+		
 		for k, v in keys {
 			line := ''
 			key := keys[k]
 			value := obj.%key%
 			line .= StrUtils.repeat(indentString, indent + 1) key ": "
-			if (Type(value) == 'Gui') {
-				line .= (recursionDetected) ? ' <recursion> ' : 
-				this.stringify(this.getGuiObject(value), indent + 1, indentString, true)
+
+			if (recursionDetected) {
+				line .= ' <recursion> '
+				if (initialCall) {
+					this._clearRecursionStorage()
+				}
+			}
+			else if (Type(value) == 'Gui') {
+				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true, false)
 			}
 			else if (ObjUtils.isObject(value)) {
-				if (value.Base.__Class) {
-					line .= (recursionDetected) ? ' <recursion> ' : 
-					this.stringify(value, indent + 1, indentString, true)
-				}
-				else {
-					line .= (recursionDetected) ? ' <recursion> ' : 
-					this.stringify(value, indent + 1, indentString)
-				}
+					console.log(value)
+					line .= this.stringify(
+						value,
+						indent + 1,
+						indentString,
+						!!(value.Base.__Class),
+						false
+					)
 			}
 			else if (ArrUtils.isArray(value)) {
 				line .= ArrUtils.stringify(value, indent + 1, indentString)
@@ -168,9 +181,33 @@ class ObjectUtilities {
 		}
 		out.Push(StrUtils.repeat(indentString, indent) "}")
 
-		this.recursionCount := {} ;! do we still need this?
-		this.recursionStorage := [] ;? Clear the list to avoid the recersion detection miss-fire due to back-logging
+		
 		return ArrayUtilities.join(out, '')
+	}
+
+	_checkRecursion(obj) {
+		this.RecursionStorage := obj
+		; console.log(' ')
+		loop(this.RecursionStorage.Length) {
+			i := (this.RecursionStorage.length - 0) - A_Index
+			if (i < 1) {
+				continue
+			}
+			target := this.RecursionStorage[i]
+			; console.log(Type(obj) ' - ' Type(target))
+			if (obj == target) {
+				; console.log('! RECURSION !')
+				;! RECURSION
+				return true
+			}
+		}
+
+		return false
+	}
+	_clearRecursionStorage() {
+		console.log('---- Clearing RecursionStorage ---- ')
+		; this.RecursionStorage
+		this._recursionStorage := [] ;? Clear the list to avoid the recersion detection miss-fire due to back-logging
 	}
 
 	/** 
