@@ -49,15 +49,13 @@ class ConsoleInstance extends ConsoleBase {
 		}
 	}
 
-	
-
 	_log(message, options*) {
 		out := ''
 
 		switchMatch := true
 		switch Type(message) {
 			case 'Gui': 
-				out := Type(message) ' ' ObjUtils.stringify(ObjUtils.getGuiObject(message)) "`n"
+				out := Type(message) ' ' ObjectUtilities.stringify(ObjectUtilities.getGuiObject(message)) "`n"
 			default: 
 				switchMatch := false
 		}
@@ -66,10 +64,10 @@ class ConsoleInstance extends ConsoleBase {
 			if (ArrUtils.IsArray(message)) {
 				out .=  Type(message) ArrUtils.stringify(message) "`n"
 			} 
-			else if (ObjUtils.IsObject(message)) {
+			else if (ObjectUtilities.IsObject(message)) {
 				/** @type {Object} */
 				obj := message
-				out .= Type(obj) ' ' ObjUtils.stringify(obj) '`n'
+				out .= Type(obj) ' ' ObjectUtilities.stringify(obj) '`n'
 			}
 			else {
 				out := message
@@ -155,15 +153,16 @@ ConsoleInstance.Base := ConsoleInstance()
 ; }
 
 
-recursion := {
-	field: 'val',
-	obj: {},
-	children: [],
-}
-recursion.children.Push(recursion)
+; recursion := {
+; 	field: 'val',
+; 	obj: {},
+; 	children: [],
+; }
+; recursion.obj := recursion
+; recursion.children.Push(recursion)
+; console.log(recursion)
 
 ; obj.someObj.friends.Push(recursion)
-; recursion.obj := recursion
 
 ; class classLog {
 ; 	__New() {
@@ -177,5 +176,4 @@ recursion.children.Push(recursion)
 ; console.log(obj)
 ; console.log({name: classLog()})
 ; console.log(Gui().Base.__Class)
-; console.log(recursion)
 ; console.log(UISettingsData())
