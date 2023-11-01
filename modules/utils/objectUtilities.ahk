@@ -10,7 +10,10 @@ class ObjectUtilities {
 	; static _recursionStorage := []
 	__Init() {
 		; OutputDebug('-------- INIT --------  `n')
+		;? The current recursion storage
 		this._recursionStorage := []
+		;? The previous recursion storages that wereclear : [[storage1], [storage2]]
+		this._recursionStorageHistory := [] 
 	}
 
 	RecursionStorage {
@@ -21,11 +24,24 @@ class ObjectUtilities {
 		set {
 			; OutputDebug('set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
 			if (Value == 'CLEAR') {
-				; console.log('---- Clearing RecursionStorage ---- ')
+				OutputDebug('---- Clearing RecursionStorage ---- `n')
+				this.RecursionStorageHistory := this._recursionStorage
 				this._recursionStorage := []
 			}
 			else {
 				this._recursionStorage.Push(Value)
+			}
+		}
+	}
+
+	RecursionStorageHistory {
+		get {
+			return this._recursionStorageHistory
+		}
+		set {
+			this._recursionStorageHistory.Push(Value)
+			if (this._recursionStorageHistory.Length > 5) {
+				this._recursionStorageHistory.RemoveAt(1)
 			}
 		}
 	}
@@ -128,8 +144,12 @@ class ObjectUtilities {
 		if (!this.isObject(obj)) {
 			return ''
 		}
-		recursionDetected := this._checkRecursion(obj)
+		recursionDetected := this._checkRecursion(obj) ;? check for a recursion
 		if (recursionDetected) {
+			if (initialCall) {
+				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
+				this.RecursionStorage := 'CLEAR' 
+			}
 			return '{ <recursion> }'
 		}
 
@@ -194,21 +214,24 @@ class ObjectUtilities {
 	}
 
 	_checkRecursion(obj) {
-		this.RecursionStorage := obj
+		
 		loop(this.RecursionStorage.Length) {
 			i := (this.RecursionStorage.length - 0) - A_Index
 			if (i < 1) {
 				continue
 			}
 			target := this.RecursionStorage[i]
-			; console.log(Type(obj) ' - ' Type(target))
+			console.log(Type(obj) ' - ' Type(target))
 			if (obj == target) {
 				;! RECURSION
-				; console.log('! RECURSION !')
+				console.log('! RECURSION !')
 				return true
 			}
 		}
+		this.RecursionStorage := obj
 
+		;TODO loop thru the recursion history and check for duplicates
+		
 		return false
 	}
 
