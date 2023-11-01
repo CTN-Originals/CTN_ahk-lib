@@ -16,6 +16,7 @@ Global wind := inst.window
 wind.x := 1920 + 4
 wind.y := (1080 - 70) - wind.height - 10
 ; wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
+wind.x := (- + wind.width - 10) ;? When only there is a second monitoron the left
 
 Global inst := ui.getInst()
 Global btn := inst.elements.Add.Button()
@@ -35,9 +36,10 @@ inst.gui.AddText('x10 y+10', 'Hello World!')
 
 ui.show()
 WinSetTransparent(100, wind.hwnd)
-inst.gui.Minimize()
+; inst.gui.Minimize()
 
 console.log(txt)
+; console.log(inst.elements)
 
 ; console.log(ui)
 ; console.log(inst.window.__Get()) ;? returns the hwnd
