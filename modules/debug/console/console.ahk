@@ -153,14 +153,14 @@ ConsoleInstance.Base := ConsoleInstance()
 ; }
 
 
-; recursion := {
-; 	field: 'val',
-; 	obj: {},
-; 	children: [],
-; }
+recursion := {
+	field: 'val',
+	obj: {},
+	children: [],
+}
 ; recursion.obj := recursion
-; recursion.children.Push(recursion)
-; console.log(recursion)
+recursion.children.Push(recursion)
+console.log(recursion)
 
 ; obj.someObj.friends.Push(recursion)
 

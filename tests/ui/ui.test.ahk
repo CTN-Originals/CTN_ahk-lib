@@ -39,7 +39,7 @@ WinSetTransparent(100, wind.hwnd)
 ; inst.gui.Minimize()
 
 ; console.log(txt)
-console.log(inst.elements)
+; console.log(inst.elements)
 
 ; console.log(ui)
 ; console.log(inst.window.__Get()) ;? returns the hwnd

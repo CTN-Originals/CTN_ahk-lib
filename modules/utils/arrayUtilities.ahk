@@ -7,6 +7,93 @@
  * - `contains` - Returns true if the item is in the array, false otherwise
 */
 class ArrayUtilities {
+	__Init() {
+		this._recursionStorage := []
+	}
+
+	RecursionStorage {
+		get {
+			return this._recursionStorage
+		}
+		set {
+			OutputDebug('[ARRAY] set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
+			if (Value == 'CLEAR') {
+				OutputDebug('---- [ARRAY] Clearing RecursionStorage ---- `n')
+				this._recursionStorage := []
+			}
+			else {
+				this._recursionStorage.Push(Value)
+			}
+		}
+	}
+
+	_checkRecursion(obj) {
+		
+		loop(this.RecursionStorage.Length) {
+			i := (this.RecursionStorage.length - 0) - A_Index
+			if (i < 1) {
+				continue
+			}
+			target := this.RecursionStorage[i]
+			; console.log(Type(obj) ' - ' Type(target))
+			if (obj == target) {
+				;! RECURSION
+				console.log('! RECURSION !')
+				return true
+			}
+		}
+		this.RecursionStorage := obj
+
+		;TODO loop thru the recursion history and check for duplicates
+		
+		return false
+	}
+
+	stringify(arr, indent := 0, indentString := '  ') {
+		this._validate(arr)
+		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
+
+		oneLiner := true ; if the array can be printed on one line
+		if (arr.Length <= 3) {
+			for i in arr {
+				if (ObjectUtilities.isObject(i)) {
+					i := ObjectUtilities.stringify(i)
+				}
+				if (StrSplit(i).Length > 20) { ; if the item is too long to be on one line
+					oneLiner := false
+					break
+				}
+			}
+		}
+		else {
+			oneLiner := false
+		}
+		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
+
+		out := '['
+		for i in arr {
+			if (out != '[') {
+				out .= ','
+			}
+			if (this.isArray(i)) {
+				out .= '[recurse] '
+				try {
+					out .= this.stringify(i, indent + 1, indentString)
+				}
+				catch {
+					console.log('Cant recurse more')
+				}
+			} 
+			else if (ObjUtils.isObject(i)) {
+				out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString)
+			} 
+			else {
+				out .= itemBreak(indent + 1) i
+			}
+		}
+		return out itemBreak() ']'
+	}
+
 	/** 
 	 * @param {Array} arr The array to check
 	*/
@@ -78,50 +165,7 @@ class ArrayUtilities {
 		return out
 	}
 
-	stringify(arr, indent := 0, indentString := '  ') {
-		this._validate(arr)
-		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
-
-		oneLiner := true ; if the array can be printed on one line
-		if (arr.Length <= 3) {
-			for i in arr {
-				if (ObjectUtilities.isObject(i)) {
-					i := ObjectUtilities.stringify(i)
-				}
-				if (StrSplit(i).Length > 20) { ; if the item is too long to be on one line
-					oneLiner := false
-					break
-				}
-			}
-		}
-		else {
-			oneLiner := false
-		}
-		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
-
-		out := '['
-		for i in arr {
-			if (out != '[') {
-				out .= ','
-			}
-			if (this.isArray(i)) {
-				out .= '[recurse] '
-				try {
-					out .= this.stringify(i, indent + 1, indentString)
-				}
-				catch {
-					console.log('Cant recurse more')
-				}
-			} 
-			else if (ObjUtils.isObject(i)) {
-				out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString)
-			} 
-			else {
-				out .= itemBreak(indent + 1) i
-			}
-		}
-		return out itemBreak() ']'
-	}
+	
 
 	; private
 	_validate(arr) {
