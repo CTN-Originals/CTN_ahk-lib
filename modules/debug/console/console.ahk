@@ -158,8 +158,16 @@ recursion := {
 	obj: {},
 	children: [],
 }
-; recursion.obj := recursion
+recursion.obj := recursion
 recursion.children.Push(recursion)
+
+arrRecursion := [
+	['gaming', 'coding', 'reading'],
+	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
+	recursion
+]
+arrRecursion.Push(arrRecursion)
+console.log(arrRecursion)
 console.log(recursion)
 
 ; obj.someObj.friends.Push(recursion)

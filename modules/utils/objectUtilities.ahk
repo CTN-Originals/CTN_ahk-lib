@@ -18,13 +18,13 @@ class ObjectUtilities {
 
 	RecursionStorage {
 		get {
-			OutputDebug('get storage | Size: ' this._recursionStorage.Length '`n')
+			OutputDebug('[OBJECT] get storage | Size: ' this._recursionStorage.Length '`n')
 			return this._recursionStorage
 		}
 		set {
-			OutputDebug('set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
+			OutputDebug('[OBJECT] set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
 			if (Value == 'CLEAR') {
-				OutputDebug('---- Clearing RecursionStorage ---- `n')
+				OutputDebug('---- [OBJECT] Clearing RecursionStorage ---- `n')
 				this.RecursionStorageHistory := this._recursionStorage
 				this._recursionStorage := []
 			}
@@ -57,18 +57,21 @@ class ObjectUtilities {
 	 * @returns {String} A string representation of the object
 	*/
 	stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
-		;? check for recursion
-		if (!this.isObject(obj)) {
-			return ''
-		}
+		
 		recursionDetected := this._checkRecursion(obj) ;? check for a recursion
 		if (recursionDetected) {
-			; if (initialCall) {
-			; 	;? Clear the list to avoid the recersion detection miss-fire due to back-logging
-			; 	this.RecursionStorage := 'CLEAR' 
-			; }
-			OutputDebug('recursionDetected: ' recursionDetected '`n')
+			if (initialCall) {
+				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
+				this.RecursionStorage := 'CLEAR' 
+			}
 			return '{ <recursion> }'
+		}
+
+		if (!this.isObject(obj)) {
+			if (initialCall) {
+				this.RecursionStorage := 'CLEAR' 
+			}
+			return ''
 		}
 
 		out := []
@@ -81,6 +84,9 @@ class ObjectUtilities {
 			}
 		}
 		else {
+			if (initialCall) {
+				this.RecursionStorage := 'CLEAR' 
+			}
 			return '{ }'
 		}
 
@@ -93,7 +99,7 @@ class ObjectUtilities {
 			line .= StrUtils.repeat(indentString, indent + 1) key ": "
 
 			if (recursionDetected) {
-				line .= ' <recursion> '
+				line .= '{ <recursion> }'
 			}
 			else if (Type(value) == 'Gui') {
 				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true, false)
@@ -108,7 +114,12 @@ class ObjectUtilities {
 				)
 			}
 			else if (ArrayUtilities.isArray(value)) {
-				line .= ArrayUtilities.stringify(value, indent + 1, indentString)
+				if (ArrayUtilities._checkRecursion(value)) {
+					line .= '[{ <recursion> }]'
+				}
+				else {
+					line .= ArrayUtilities.stringify(value, indent + 1, indentString)
+				}
 			}
 			else {
 				line .= value
@@ -142,7 +153,7 @@ class ObjectUtilities {
 			; console.log(Type(obj) ' - ' Type(target))
 			if (obj == target) {
 				;! RECURSION
-				console.log('! RECURSION !')
+				console.log('[OBJECT] ! RECURSION !')
 				return true
 			}
 		}
