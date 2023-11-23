@@ -7,6 +7,121 @@
  * - `contains` - Returns true if the item is in the array, false otherwise
 */
 class ArrayUtilities {
+	__Init() {
+		this._recursionStorage := []
+	}
+
+	RecursionStorage {
+		get {
+			; OutputDebug('[ARRAY]  get storage | Size: ' this._recursionStorage.Length '`n')
+			return this._recursionStorage
+		}
+		set {
+			; OutputDebug('[ARRAY]  set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
+			if (Value == 'CLEAR') {
+				; OutputDebug('---- [ARRAY]  Clearing RecursionStorage ---- `n')
+				this._recursionStorage := []
+			}
+			else {
+				this._recursionStorage.Push(Value)
+			}
+		}
+	}
+
+	;! The recursion storage has a recursion inside of itself that its not detecting
+	;! arr [item1, item2, item3, item4: [item1, item2, item3, item4: [and so on]]]
+	_checkRecursion(arr) {
+		
+		loop(this.RecursionStorage.Length) {
+			i := (this.RecursionStorage.length - 0) - A_Index
+			if (i < 1) {
+				continue
+			}
+			target := this.RecursionStorage[i]
+			; console.log(Type(obj) ' - ' Type(target))
+			if (arr == target) {
+				;! RECURSION
+				OutputDebug('[ARRAY]  ! RECURSION !`n')
+				return true
+			}
+		}
+		this.RecursionStorage := arr
+
+		return false
+	}
+
+	stringify(arr, indent := 0, indentString := '  ', initialCall := true) {
+		this._validate(arr)
+		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
+
+		recursionDetected := this._checkRecursion(arr) ;? check for a recursion
+		if (recursionDetected) {
+			if (initialCall) {
+				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
+				this.RecursionStorage := 'CLEAR' 
+			}
+			return '-[ <recursion> ]-'
+		}
+
+		oneLiner := !!(arr.Length <= 3) ; if the array can be printed on one line
+		if (oneLiner) {
+			for i in arr {
+				if (ObjectUtilities.isObject(i)) {
+					if (ObjectUtilities._checkRecursion(i)) {
+						i := '{[ <recursion> ]}'
+					}
+					else {
+						i := ObjectUtilities.stringify(i, 0, ' ')
+					}
+				}
+				if (this.isArray(i) || StrSplit(i).Length > 20) { ; if the item is too long to be on one line
+					oneLiner := false
+					break
+				}
+			}
+		}
+
+		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
+
+		out := '['
+		for i in arr {
+			if (recursionDetected) {
+				out .= '[ <recusion> ]'
+				continue
+			}
+			if (out != '[') {
+				out .= ','
+			}
+
+			if (this.isArray(i)) {
+				; out .= ''
+				try {
+					out .= this.stringify(i, indent + 1, indentString, false)
+				}
+				catch {
+					console.log('Cant recurse more')
+				}
+			} 
+			else if (ObjUtils.isObject(i)) {
+				if (ObjectUtilities._checkRecursion(i)) {
+					out .= itemBreak(indent + 1) '{[ <recursion> ]}' itemBreak(indent + 1)
+				}
+				else {
+					out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString, true) itemBreak(indent + 1)
+				}
+			} 
+			else {
+				out .= itemBreak(indent + 1) i
+			}
+		}
+
+		if (initialCall) {
+			;? Clear the list to avoid the recersion detection miss-fire due to back-logging
+			this.RecursionStorage := 'CLEAR' 
+		}
+		return out itemBreak() ']'
+	}
+
 	/** 
 	 * @param {Array} arr The array to check
 	*/
@@ -78,50 +193,7 @@ class ArrayUtilities {
 		return out
 	}
 
-	stringify(arr, indent := 0, indentString := '  ') {
-		this._validate(arr)
-		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
-
-		oneLiner := true ; if the array can be printed on one line
-		if (arr.Length <= 3) {
-			for i in arr {
-				if (ObjectUtilities.isObject(i)) {
-					i := ObjectUtilities.stringify(i)
-				}
-				if (StrSplit(i).Length > 20) { ; if the item is too long to be on one line
-					oneLiner := false
-					break
-				}
-			}
-		}
-		else {
-			oneLiner := false
-		}
-		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
-
-		out := '['
-		for i in arr {
-			if (out != '[') {
-				out .= ','
-			}
-			if (this.isArray(i)) {
-				out .= '[recurse] '
-				try {
-					out .= this.stringify(i, indent + 1, indentString)
-				}
-				catch {
-					console.log('Cant recurse more')
-				}
-			} 
-			else if (ObjUtils.isObject(i)) {
-				out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString)
-			} 
-			else {
-				out .= itemBreak(indent + 1) i
-			}
-		}
-		return out itemBreak() ']'
-	}
+	
 
 	; private
 	_validate(arr) {

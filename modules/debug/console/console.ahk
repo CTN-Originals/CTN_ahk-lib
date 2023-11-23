@@ -153,14 +153,22 @@ ConsoleInstance.Base := ConsoleInstance()
 ; }
 
 
-; recursion := {
-; 	field: 'val',
-; 	obj: {},
-; 	children: [],
-; }
-; recursion.obj := recursion
-; recursion.children.Push(recursion)
-; console.log(recursion)
+recursion := {
+	field: 'val',
+	obj: {},
+	children: [],
+}
+recursion.obj := recursion
+recursion.children.Push(recursion)
+
+arrRecursion := [
+	['gaming', 'coding', 'reading'],
+	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
+	recursion
+]
+arrRecursion.Push(arrRecursion)
+console.log(recursion)
+console.log(arrRecursion)
 
 ; obj.someObj.friends.Push(recursion)
 

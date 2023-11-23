@@ -8,16 +8,23 @@ class UIElementBase {
 		this.collection := {} ;? All elements sorted by type. the type is dynamically added based on the Type(element).replace('Gui.')
 
 		this.Add := AddElement(this)
-
-		
 	}
 
 	__Get(index) {
 		return this.list[index]
 	}
 
-	_registerElement(element) {
-
+	registerElement(element) {
+		this.list.Push(element)
+		elementName := element.Base.__Class
+		subCollection := ObjectUtilities.hasKey(this.collection, elementName)
+		if (!subCollection) {
+			console.log(elementName)
+			this.collection.%elementName% := [element]
+		}
+		else {
+			this.collection.%elementName%.Push(element)
+		}
 	}
 }
 
@@ -45,18 +52,22 @@ class AddElement {
 		this.elementBase := elementBase
 	}
 
+	_validateNew(element) {
+		element.setParent(this.elementBase)
+		this.elementBase.registerElement(element)
+	}
+
 	/* @returns {Button} The created text element */
 	Button() {
 		element := Button()
-		this.elementBase._registerElement(element)
+		this._validateNew(element)
 		return element
 	}
 
 	/* @returns {Text} The created text element */
 	Text() {
 		element := Text()
-		element.setParent(this.elementBase)
-		this.elementBase._registerElement(element)
+		this._validateNew(element)
 		return element
 	}
 }
