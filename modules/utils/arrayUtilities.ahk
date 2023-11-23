@@ -28,6 +28,8 @@ class ArrayUtilities {
 		}
 	}
 
+	;! The recursion storage has a recursion inside of itself that its not detecting
+	;! arr [item1, item2, item3, item4: [item1, item2, item3, item4: [and so on]]]
 	_checkRecursion(arr) {
 		
 		loop(this.RecursionStorage.Length) {
@@ -58,7 +60,7 @@ class ArrayUtilities {
 				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
 				this.RecursionStorage := 'CLEAR' 
 			}
-			return '[ <recursion> ]'
+			return '-[ <recursion> ]-'
 		}
 
 		oneLiner := !!(arr.Length <= 3) ; if the array can be printed on one line

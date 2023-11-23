@@ -167,8 +167,8 @@ arrRecursion := [
 	recursion
 ]
 arrRecursion.Push(arrRecursion)
-console.log(arrRecursion)
 console.log(recursion)
+console.log(arrRecursion)
 
 ; obj.someObj.friends.Push(recursion)
 
