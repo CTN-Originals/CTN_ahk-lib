@@ -30,7 +30,7 @@ class ArrayUtilities {
 
 	;! The recursion storage has a recursion inside of itself that its not detecting
 	;! arr [item1, item2, item3, item4: [item1, item2, item3, item4: [and so on]]]
-	_checkRecursion(arr) {
+	_checkRecursion(arr, depth := 0) {
 		
 		loop(this.RecursionStorage.Length) {
 			i := (this.RecursionStorage.length - 0) - A_Index
@@ -43,6 +43,9 @@ class ArrayUtilities {
 				;! RECURSION
 				OutputDebug('[ARRAY]  ! RECURSION !`n')
 				return true
+			}
+			else if (depth == 0) {
+				return this._checkRecursion(target, depth + 1)
 			}
 		}
 		this.RecursionStorage := arr
