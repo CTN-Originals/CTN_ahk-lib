@@ -6,48 +6,51 @@
  * - `keys` - Returns an array of keys from the object
  * - `values` - Returns an array of values from the object
 */
-class ObjectUtilities {
-	; static _recursionStorage := []
-	__Init() {
-		; OutputDebug('-------- INIT --------  `n')
-		;? The current recursion storage
-		this._recursionStorage := []
-		;? The previous recursion storages that wereclear : [[storage1], [storage2]]
-		this._recursionStorageHistory := [] 
+class ObjectUtilities extends CollectionBase {
+	__New() {
+		super.__Init('Object')
 	}
 
-	RecursionStorage {
-		get {
-			OutputDebug('[OBJECT] get storage | Size: ' this._recursionStorage.Length '`n')
-			return this._recursionStorage
-		}
-		set {
-			OutputDebug('[OBJECT] set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
-			if (Value == 'CLEAR') {
-				OutputDebug('---- [OBJECT] Clearing RecursionStorage ---- `n')
-				this.RecursionStorageHistory := this._recursionStorage
-				this._recursionStorage := []
-			}
-			else {
-				this._recursionStorage.Push(Value)
-			}
-		}
-	}
+	; RecursionStorage {
+	; 	get {
+	; 		OutputDebug('[OBJECT] get storage | Size: ' this._recursionStorage.Length '`n')
+	; 		return this._recursionStorage
+	; 	}
+	; 	set {
+	; 		OutputDebug('[OBJECT] set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
+	; 		if (Value == 'CLEAR') {
+	; 			OutputDebug('---- [OBJECT] Clearing RecursionStorage ---- `n`n')
+	; 			this.RecursionStorageHistory := this._recursionStorage
+	; 			this._recursionStorage := []
+	; 		}
+	; 		else {
+	; 			this._recursionStorage.Push(Value)
+	; 		}
+	; 	}
+	; }
 
-	RecursionStorageHistory {
-		get {
-			; OutputDebug('[History] get storage | Size: ' this._recursionStorageHistory.Length '`n')
-			return this._recursionStorageHistory
-		}
-		set {
-			; OutputDebug('[History] set storage | Size: ' this._recursionStorageHistory.Length ' + 1' '`n')
-			this._recursionStorageHistory.Push(Value)
-			if (this._recursionStorageHistory.Length > 5) {
-				; OutputDebug('[History] remove storage | Size: ' this._recursionStorageHistory.Length ' - 1' '`n')
-				return this._recursionStorageHistory.RemoveAt(1)
-			}
-		}
-	}
+	; _checkRecursion(obj, depth := 0) {
+		
+	; 	loop(this.RecursionStorage.Length) {
+	; 		i := (this.RecursionStorage.length - 0) - A_Index
+	; 		if (i < 1) {
+	; 			continue
+	; 		}
+	; 		target := this.RecursionStorage[i]
+	; 		; console.log(Type(obj) ' - ' Type(target))
+	; 		if (obj == target) {
+	; 			;! RECURSION
+	; 			; console.log('[OBJECT] ! RECURSION !')
+	; 			return true
+	; 		}
+	; 		else if (depth == 0) {
+	; 			return this._checkRecursion(obj, depth + 1)
+	; 		}
+	; 	}
+	; 	this.RecursionStorage := obj
+
+	; 	return false
+	; }
 
 	/** 
 	 * @param {Object} obj The object to stringify
@@ -58,19 +61,15 @@ class ObjectUtilities {
 	*/
 	stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
 		
-		recursionDetected := this._checkRecursion(obj) ;? check for a recursion
+		static recursionDetected := this._checkRecursion(obj) ;? check for a recursion
+		endOfFunction := (init := initialCall, rec := false) => ((this.RecursionStorage := (init) ? 'CLEAR' : 'null') (recursionDetected := rec))
 		if (recursionDetected) {
-			if (initialCall) {
-				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
-				this.RecursionStorage := 'CLEAR' 
-			}
-			return '{ <recursion> }'
+			endOfFunction()
+			return '-{ <recursion> }-'
 		}
 
 		if (!this.isObject(obj)) {
-			if (initialCall) {
-				this.RecursionStorage := 'CLEAR' 
-			}
+			endOfFunction()
 			return ''
 		}
 
@@ -84,9 +83,7 @@ class ObjectUtilities {
 			}
 		}
 		else {
-			if (initialCall) {
-				this.RecursionStorage := 'CLEAR' 
-			}
+			endOfFunction()
 			return '{ }'
 		}
 
@@ -100,6 +97,8 @@ class ObjectUtilities {
 
 			if (recursionDetected) {
 				line .= '{ <recursion> }'
+				endOfFunction()
+				; continue
 			}
 			else if (Type(value) == 'Gui') {
 				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true, false)
@@ -114,11 +113,13 @@ class ObjectUtilities {
 				)
 			}
 			else if (ArrayUtilities.isArray(value)) {
-				if (ArrayUtilities._checkRecursion(value)) {
-					line .= '[{ <recursion> }]'
+				recursionDetected := ArrayUtilities._checkRecursion(value)
+				if (recursionDetected) {
+					; endOfFunction()
+					return '[{ <recursion> }]'
 				}
 				else {
-					line .= ArrayUtilities.stringify(value, indent + 1, indentString)
+					line .= ArrayUtilities.stringify(value, indent + 1, indentString, initialCall)
 				}
 			}
 			else {
@@ -135,34 +136,11 @@ class ObjectUtilities {
 		}
 		out.Push(StrUtils.repeat(indentString, indent) "}")
 
-		if (initialCall) {
-			;? Clear the list to avoid the recersion detection miss-fire due to back-logging
-			this.RecursionStorage := 'CLEAR' 
-		}
+		endOfFunction()
 		return ArrayUtilities.join(out, '')
 	}
 
-	_checkRecursion(obj) {
-		
-		loop(this.RecursionStorage.Length) {
-			i := (this.RecursionStorage.length - 0) - A_Index
-			if (i < 1) {
-				continue
-			}
-			target := this.RecursionStorage[i]
-			; console.log(Type(obj) ' - ' Type(target))
-			if (obj == target) {
-				;! RECURSION
-				console.log('[OBJECT] ! RECURSION !')
-				return true
-			}
-		}
-		this.RecursionStorage := obj
-
-		;TODO loop thru the recursion history and check for duplicates
-		
-		return false
-	}
+	
 
 	; static recursionExeptions := [
 	; 	"Object",

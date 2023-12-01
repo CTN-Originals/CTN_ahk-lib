@@ -6,83 +6,39 @@
  * - `cleanUp` - Removes empty items from the array
  * - `contains` - Returns true if the item is in the array, false otherwise
 */
-class ArrayUtilities {
-	__Init() {
-		this._recursionStorage := []
-	}
-
-	RecursionStorage {
-		get {
-			; OutputDebug('[ARRAY]  get storage | Size: ' this._recursionStorage.Length '`n')
-			return this._recursionStorage
-		}
-		set {
-			; OutputDebug('[ARRAY]  set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
-			if (Value == 'CLEAR') {
-				; OutputDebug('---- [ARRAY]  Clearing RecursionStorage ---- `n')
-				this._recursionStorage := []
-			}
-			else {
-				this._recursionStorage.Push(Value)
-			}
-		}
-	}
-
-	;! The recursion storage has a recursion inside of itself that its not detecting
-	;! arr [item1, item2, item3, item4: [item1, item2, item3, item4: [and so on]]]
-	_checkRecursion(arr, depth := 0) {
-		
-		loop(this.RecursionStorage.Length) {
-			i := (this.RecursionStorage.length - 0) - A_Index
-			if (i < 1) {
-				continue
-			}
-			target := this.RecursionStorage[i]
-			; console.log(Type(obj) ' - ' Type(target))
-			if (arr == target) {
-				;! RECURSION
-				OutputDebug('[ARRAY]  ! RECURSION !`n')
-				return true
-			}
-			else if (depth == 0) {
-				return this._checkRecursion(target, depth + 1)
-			}
-		}
-		this.RecursionStorage := arr
-
-		return false
+class ArrayUtilities extends CollectionBase {
+	__New() {
+		super.__Init('Array')
 	}
 
 	stringify(arr, indent := 0, indentString := '  ', initialCall := true) {
 		this._validate(arr)
 		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
 
-		recursionDetected := this._checkRecursion(arr) ;? check for a recursion
+		static recursionDetected := this._checkRecursion(arr) ;? check for a recursion
+		endOfFunction := (init := initialCall, rec := false) => ((this.RecursionStorage := (init) ? 'CLEAR' : 'null') (recursionDetected := rec))
 		if (recursionDetected) {
-			if (initialCall) {
-				;? Clear the list to avoid the recersion detection miss-fire due to back-logging
-				this.RecursionStorage := 'CLEAR' 
-			}
-			return '-[ <recursion> ]-'
+			endOfFunction(false)
+			; return '-[ <recursion> ]-'
 		}
 
 		oneLiner := !!(arr.Length <= 3) ; if the array can be printed on one line
-		if (oneLiner) {
-			for i in arr {
-				if (ObjectUtilities.isObject(i)) {
-					if (ObjectUtilities._checkRecursion(i)) {
-						i := '{[ <recursion> ]}'
-					}
-					else {
-						i := ObjectUtilities.stringify(i, 0, ' ')
-					}
-				}
-				if (this.isArray(i) || StrSplit(i).Length > 20) { ; if the item is too long to be on one line
-					oneLiner := false
-					break
-				}
-			}
-		}
+		; if (oneLiner) {
+		; 	for i in arr {
+		; 		if (ObjectUtilities.isObject(i)) {
+		; 			if (ObjectUtilities._checkRecursion(i)) {
+		; 				i := '{[ <recursion> ]}'
+		; 			}
+		; 			else {
+		; 				i := ObjectUtilities.stringify(i, 0, ' ', initialCall)
+		; 			}
+		; 		}
+		; 		if (this.isArray(i) || StrSplit(i).Length > 20) { ; if the item is too long to be on one line
+		; 			oneLiner := false
+		; 			break
+		; 		}
+		; 	}
+		; }
 
 		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
 
@@ -106,22 +62,23 @@ class ArrayUtilities {
 				}
 			} 
 			else if (ObjUtils.isObject(i)) {
-				if (ObjectUtilities._checkRecursion(i)) {
-					out .= itemBreak(indent + 1) '{[ <recursion> ]}' itemBreak(indent + 1)
+				recursionDetected := ObjectUtilities._checkRecursion(i)
+				if (recursionDetected) {
+					; endOfFunction(initialCall, true)
+					return '|[ <recursion> ]|'
+					; out .= itemBreak(indent + 1) '{[ <recursion> ]}' itemBreak(indent + 1)
+					; break
 				}
 				else {
-					out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString, true) itemBreak(indent + 1)
+					out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString, initialCall) itemBreak(indent + 1)
 				}
 			} 
 			else {
 				out .= itemBreak(indent + 1) i
 			}
 		}
-
-		if (initialCall) {
-			;? Clear the list to avoid the recersion detection miss-fire due to back-logging
-			this.RecursionStorage := 'CLEAR' 
-		}
+		vsout := StrReplace(out, '`n', '')
+		endOfFunction()
 		return out itemBreak() ']'
 	}
 

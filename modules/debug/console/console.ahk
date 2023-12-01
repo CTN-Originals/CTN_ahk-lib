@@ -61,8 +61,8 @@ class ConsoleInstance extends ConsoleBase {
 		}
 
 		if (!switchMatch) {
-			if (ArrUtils.IsArray(message)) {
-				out .=  Type(message) ArrUtils.stringify(message) "`n"
+			if (ArrayUtilities.isArray(message)) {
+				out .=  Type(message) ArrayUtilities.stringify(message) "`n"
 			} 
 			else if (ObjectUtilities.IsObject(message)) {
 				/** @type {Object} */
@@ -164,11 +164,14 @@ recursion.children.Push(recursion)
 arrRecursion := [
 	['gaming', 'coding', 'reading'],
 	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
-	recursion
+	['carreot'],
+	['potato', 'tomato'],
+	; recursion
 ]
+arrRecursion.Push(recursion)
 arrRecursion.Push(arrRecursion)
-console.log(recursion)
 console.log(arrRecursion)
+console.log(recursion)
 
 ; obj.someObj.friends.Push(recursion)
 
