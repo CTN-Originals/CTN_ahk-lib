@@ -11,75 +11,27 @@ class ArrayUtilities extends CollectionBase {
 		super.__Init('Array')
 	}
 
+
 	stringify(arr, indent := 0, indentString := '  ', initialCall := true) {
-		this._validate(arr)
-		ind := (lvl := indent) => StringUtilities.repeat(indentString, lvl)
-
-		static recursionDetected := this._checkRecursion(arr) ;? check for a recursion
-		endOfFunction := (init := initialCall, rec := false) => ((this.RecursionStorage := (init) ? 'CLEAR' : 'null') (recursionDetected := rec))
-		if (recursionDetected) {
-			endOfFunction(false)
-			; return '-[ <recursion> ]-'
-		}
-
-		oneLiner := !!(arr.Length <= 3) ; if the array can be printed on one line
-		; if (oneLiner) {
-		; 	for i in arr {
-		; 		if (ObjectUtilities.isObject(i)) {
-		; 			if (ObjectUtilities._checkRecursion(i)) {
-		; 				i := '{[ <recursion> ]}'
-		; 			}
-		; 			else {
-		; 				i := ObjectUtilities.stringify(i, 0, ' ', initialCall)
-		; 			}
-		; 		}
-		; 		if (this.isArray(i) || StrSplit(i).Length > 20) { ; if the item is too long to be on one line
-		; 			oneLiner := false
-		; 			break
-		; 		}
-		; 	}
-		; }
-
-		itemBreak := (lvl := indent) => (oneLiner) ? ' ' : '`n' ind(lvl)
-
-		out := '['
-		for i in arr {
-			if (recursionDetected) {
-				out .= '[ <recusion> ]'
-				continue
+		;? tmp crude but working tostring feature
+		out := []
+		for i, value in arr {
+			line := ''
+			if (this.isArray(value)) {
+				line .= this.stringify(value)
 			}
-			if (out != '[') {
-				out .= ','
+			else if (ObjectUtilities.isObject(value)) {
+				line .= ObjectUtilities.stringify(value)
 			}
-
-			if (this.isArray(i)) {
-				; out .= ''
-				try {
-					out .= this.stringify(i, indent + 1, indentString, false)
-				}
-				catch {
-					console.log('Cant recurse more')
-				}
-			} 
-			else if (ObjUtils.isObject(i)) {
-				recursionDetected := ObjectUtilities._checkRecursion(i)
-				if (recursionDetected) {
-					; endOfFunction(initialCall, true)
-					return '|[ <recursion> ]|'
-					; out .= itemBreak(indent + 1) '{[ <recursion> ]}' itemBreak(indent + 1)
-					; break
-				}
-				else {
-					out .= itemBreak(indent - 2) ObjUtils.stringify(i, indent + 1, indentString, initialCall) itemBreak(indent + 1)
-				}
-			} 
 			else {
-				out .= itemBreak(indent + 1) i
+				line .= value
 			}
+			line .= '`n'
+
+			out.Push(line)
 		}
-		vsout := StrReplace(out, '`n', '')
-		endOfFunction()
-		return out itemBreak() ']'
+
+		return ArrayUtilities.join(out, '')
 	}
 
 	/** 

@@ -158,8 +158,8 @@ recursion := {
 	obj: {},
 	children: [],
 }
-recursion.obj := recursion
-recursion.children.Push(recursion)
+; recursion.obj := recursion
+; recursion.children.Push(recursion)
 
 arrRecursion := [
 	['gaming', 'coding', 'reading'],
@@ -168,8 +168,8 @@ arrRecursion := [
 	['potato', 'tomato'],
 	; recursion
 ]
-arrRecursion.Push(recursion)
-arrRecursion.Push(arrRecursion)
+; arrRecursion.Push(recursion)
+; arrRecursion.Push(arrRecursion)
 console.log(arrRecursion)
 console.log(recursion)
 
