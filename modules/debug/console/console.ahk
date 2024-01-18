@@ -149,28 +149,28 @@ obj := {
 		]
 	}
 }
-console.log(arr)
-console.log(obj)
+; console.log(arr)
+; console.log(obj)
 
 ; ArrayUtilities.stringify(arr)
 ; console.log('`n')
 ; ObjectUtilities.stringify(obj)
 
-; recursion := {
-; 	field: 'val',
-; 	obj: {},
-; 	children: [],
-; }
+recursion := {
+	field: 'val',
+	obj: {},
+	children: [],
+}
 ; recursion.obj := recursion
 ; recursion.children.Push(recursion)
 
-; arrRecursion := [
-; 	['gaming', 'coding', 'reading'],
-; 	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
-; 	['carreot'],
-; 	['potato', 'tomato'],
-; 	; recursion
-; ]
+arrRecursion := [
+	['gaming', 'coding', 'reading'],
+	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
+	['carreot'],
+	['potato', 'tomato'],
+	recursion
+]
 ; arrRecursion.Push(recursion)
 ; arrRecursion.Push(arrRecursion)
 ; console.log(arrRecursion)

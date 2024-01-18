@@ -1,9 +1,12 @@
 OnError ErrorHandler
+
+
 class CollectionBase {
 	__Init(collectionType := 'BASE') {
 		; OutputDebug('-------- [' collectionType '] INIT --------  `n')
 		this._collectionType := collectionType
 		this._prefix := (*) => StrUpper(this._collectionType)
+		this._recursionStorage := [] ;? store all collections that are being stringified to compare against later
 	}
 
 	/** Check if a variable is a collection (array or object)
@@ -23,6 +26,16 @@ class CollectionBase {
 	*/
 	stringify(coll, indent := 0, indentString := "  ", displayHolder := true, isValue := false, initialCall := true) {
 		out := ''
+
+		this._recursionStorage.Push(coll) ;? add the collection to the recursion storage
+
+		loop (this._recursionStorage.Length - 1) { ;? loop through the recursion storage backwards
+			i := this._recursionStorage.Length - A_Index
+			if (this._recursionStorage[i] == coll) {
+				;? if the collection is already in the recursion storage, it is a recursion
+				return ' <recursion> '
+			}
+		}
 
 		getBracketPair := (input) => (ObjectUtilities.isObject(input)) ? ['{', '}'] : ['[', ']']
 		
@@ -46,7 +59,10 @@ class CollectionBase {
 				unfoldedValue := this.stringify(value, indent + 1, indentString, displayHolder, true, false)
 				valueBrackets := getBracketPair(value)
 
-				if (StrLen(unfoldedValue) > 0) { ;? does the value contain any content?
+				if (unfoldedValue == ' <recursion> ') {
+					line .= valueBrackets[1] unfoldedValue valueBrackets[2]
+				}
+				else if (StrLen(unfoldedValue) > 0) { ;? does the value contain any content?
 					line .= valueBrackets[1] '`n' unfoldedValue lineStart valueBrackets[2]
 				}
 				else line .= valueBrackets[1] valueBrackets[2] ;? stop the line with just the brackets to indicate an empty value collection
@@ -63,6 +79,10 @@ class CollectionBase {
 
 		if (displayHolder && initialCall) {
 			out .= brackets[2]
+		}
+
+		if (initialCall) { ;? if this is the initial call, reset the recursion storage
+			this._recursionStorage := [] ;? clear the recursion storage
 		}
 		
 		return out
