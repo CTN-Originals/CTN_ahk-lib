@@ -1,9 +1,7 @@
 OnError ErrorHandler
-Global collectionRecursionStorage := []
 class CollectionBase {
 	__Init(collectionType := 'BASE') {
-		; OutputDebug('-------- INIT --------  `n')
-		;? The current recursion storage
+		; OutputDebug('-------- [' collectionType '] INIT --------  `n')
 		this._collectionType := collectionType
 		this._prefix := (*) => StrUpper(this._collectionType)
 	}
@@ -23,37 +21,47 @@ class CollectionBase {
 	 * @param {Boolean} isValue Is this collection a value iside another collection?
 	 * @returns {String} A string representation of the collection
 	*/
-	stringify(coll, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
-		;? tmp crude but working tostring feature
-		out := []
+	stringify(coll, indent := 0, indentString := "  ", displayHolder := true, isValue := false, initialCall := true) {
+		out := ''
+
+		getBracketPair := (input) => (ObjectUtilities.isObject(input)) ? ['{', '}'] : ['[', ']']
+		
 		isObj := ObjectUtilities.isObject(coll) ;? to make conditions easier later
-		iterable := (isObj) ? coll.OwnProps() : coll
-		lineStart := StringUtilities.repeat(indentString, indent)
-		brackets := (isObj) ? ['{', '}'] : ['[', ']']
-
-		for key, value in iterable {
-			line := lineStart ((isObj) ? key ': ' : '')
-
-			if (this.isCollection(value)) {
-				unfoldedValue := this.stringify(value, indent + 1, indentString, true, false)
-				if (StrLen(unfoldedValue) == 0) {
-					line .= brackets[1] brackets[2]
-				}
-				else {
-					line .= brackets[1] '`n' unfoldedValue lineStart brackets[2]
-				}
-			}
-			else {
-				line .= value
-				; OutputDebug(line '`n') ;! Debug only
-			}
-
-			line .= '`n'
-			
-			out.Push(line)
-			; Sleep(100) ;! Debug only
+		iterable := (isObj) ? coll.OwnProps() : coll ;? Make the passed in coll iterable 
+		brackets := getBracketPair(coll)
+		
+		if (displayHolder && initialCall) {
+			out := Type(coll) ' ' brackets[1] '`n'
+			indent++
 		}
 
-		return ArrayUtilities.join(out, '')
+		lineStart := StringUtilities.repeat(indentString, indent) ;? store the start of each line in a var to access later
+
+		for key, value in iterable {
+			line := lineStart ((isObj) ? key ': ' : '') ;? Start the line
+
+			if (this.isCollection(value)) {
+				;? unfold the value into the stringified string
+				unfoldedValue := this.stringify(value, indent + 1, indentString, displayHolder, true, false)
+				valueBrackets := getBracketPair(value)
+
+				if (StrLen(unfoldedValue) > 0) { ;? does the value contain any content?
+					line .= valueBrackets[1] '`n' unfoldedValue lineStart valueBrackets[2]
+				}
+				else line .= valueBrackets[1] valueBrackets[2] ;? stop the line with just the brackets to indicate an empty value collection
+			}
+			else line .= value ;? nothing special, just add the value to the line
+
+			;TODO check if this is the last item, if not, add a comma (,)
+			line .= '`n'
+			
+			out .= line
+		}
+
+		if (displayHolder && initialCall) {
+			out .= brackets[2]
+		}
+		
+		return out
 	}
 }

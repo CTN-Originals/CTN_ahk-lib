@@ -62,12 +62,10 @@ class ConsoleInstance extends ConsoleBase {
 
 		if (!switchMatch) {
 			if (ArrayUtilities.isArray(message)) {
-				out .=  Type(message) ArrayUtilities.stringify(message) "`n"
+				out .=  ArrayUtilities.stringify(message)
 			} 
 			else if (ObjectUtilities.IsObject(message)) {
-				/** @type {Object} */
-				obj := message
-				out .= Type(obj) ' ' ObjectUtilities.stringify(obj) '`n'
+				out .= ObjectUtilities.stringify(message)
 			}
 			else {
 				out := message
