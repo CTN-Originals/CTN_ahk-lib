@@ -19,7 +19,7 @@ class UIElementBase {
 		elementName := element.Base.__Class
 		subCollection := ObjectUtilities.hasKey(this.collection, elementName)
 		if (!subCollection) {
-			console.log(elementName)
+			; console.log(elementName)
 			this.collection.%elementName% := [element]
 		}
 		else {
