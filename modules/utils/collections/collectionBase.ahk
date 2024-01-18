@@ -36,6 +36,7 @@ class CollectionBase {
 		}
 
 		lineStart := StringUtilities.repeat(indentString, indent) ;? store the start of each line in a var to access later
+		maxIndex := (isObj) ? ObjOwnPropCount(coll) : iterable.Length ;? get the max index of the collection
 
 		for key, value in iterable {
 			line := lineStart ((isObj) ? key ': ' : '') ;? Start the line
@@ -52,7 +53,9 @@ class CollectionBase {
 			}
 			else line .= value ;? nothing special, just add the value to the line
 
-			;TODO check if this is the last item, if not, add a comma (,)
+			if (maxIndex != A_Index) {
+				line .= ','
+			}
 			line .= '`n'
 			
 			out .= line
