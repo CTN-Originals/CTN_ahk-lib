@@ -115,63 +115,68 @@ class console extends ConsoleInstance {
 ConsoleInstance.Base := ConsoleInstance()
 
 
-; arr := [1, 2, 3, 4, 5]
-; obj := {
-; 	some: 'thing',
-; 	another: 'something',
-; 	anotherthing: 'something else',
-; 	emptyObj: {},
-; 	emptyArr: [],
-; 	guiObj: Gui(),
-; 	someObj: {
-; 		fruits: ['apple', 'banana', 'orange'],
-; 		; vegetables: ['carrot', 'potato', 'tomato'],
-; 		; hobbies: ['gaming', 'coding', 'reading', 'writing'],
-; 		friends: [
-; 			{
-; 				name: 'John',
-; 				age: 20,
-; 				hobbies: ['gaming', 'coding'],
-; 			},
-; 			; {
-; 			; 	name: 'Jane',
-; 			; 	age: 21,
-; 			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
-; 			; },
-; 			; {
-; 			; 	name: 'Jack',
-; 			; 	age: 22,
-; 			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
-; 			; },
-; 			; {
-; 			; 	name: 'Jill',
-; 			; 	age: 23,
-; 			; 	hobbies: ['gaming', 'coding', 'reading'],
-; 			; },
-; 		]
-; 	}
-; }
-
-
-recursion := {
-	field: 'val',
-	obj: {},
-	children: [],
+arr := ['apple', 'banana', 'orange', 'cherry', 'pineapple']
+obj := {
+	some: 'thing',
+	another: 'something',
+	anotherthing: 'something else',
+	emptyObj: {},
+	emptyArr: [],
+	guiObj: Gui(),
+	someObj: {
+		fruits: ['apple', 'banana', 'orange'],
+		; vegetables: ['carrot', 'potato', 'tomato'],
+		; hobbies: ['gaming', 'coding', 'reading', 'writing'],
+		friends: [
+			{
+				name: 'John',
+				age: 20,
+				hobbies: ['gaming', 'coding'],
+			},
+			; {
+			; 	name: 'Jane',
+			; 	age: 21,
+			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
+			; },
+			; {
+			; 	name: 'Jack',
+			; 	age: 22,
+			; 	hobbies: ['gaming', 'coding', 'reading', 'writing'],
+			; },
+			; {
+			; 	name: 'Jill',
+			; 	age: 23,
+			; 	hobbies: ['gaming', 'coding', 'reading'],
+			; },
+		]
+	}
 }
+console.log(arr)
+console.log(obj)
+
+; ArrayUtilities.stringify(arr)
+; console.log('`n')
+; ObjectUtilities.stringify(obj)
+
+; recursion := {
+; 	field: 'val',
+; 	obj: {},
+; 	children: [],
+; }
 ; recursion.obj := recursion
 ; recursion.children.Push(recursion)
 
-arrRecursion := [
-	['gaming', 'coding', 'reading'],
-	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
-	['carreot'],
-	['potato', 'tomato'],
-	; recursion
-]
+; arrRecursion := [
+; 	['gaming', 'coding', 'reading'],
+; 	['apple', 'banana', 'orange', 'cherry', 'pineapple'],
+; 	['carreot'],
+; 	['potato', 'tomato'],
+; 	; recursion
+; ]
 ; arrRecursion.Push(recursion)
 ; arrRecursion.Push(arrRecursion)
-console.log(arrRecursion)
-console.log(recursion)
+; console.log(arrRecursion)
+; console.log(recursion)
 
 ; obj.someObj.friends.Push(recursion)
 

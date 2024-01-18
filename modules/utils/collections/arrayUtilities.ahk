@@ -11,28 +11,27 @@ class ArrayUtilities extends CollectionBase {
 		super.__Init('Array')
 	}
 
+	; stringify(arr, indent := 0, indentString := '  ', initialCall := true) {
+	; 	;? tmp crude but working tostring feature
+	; 	out := []
+	; 	for i, value in arr {
+	; 		line := ''
+	; 		if (this.isArray(value)) {
+	; 			line .= this.stringify(value)
+	; 		}
+	; 		else if (ObjectUtilities.isObject(value)) {
+	; 			line .= ObjectUtilities.stringify(value)
+	; 		}
+	; 		else {
+	; 			line .= value
+	; 		}
+	; 		line .= '`n'
 
-	stringify(arr, indent := 0, indentString := '  ', initialCall := true) {
-		;? tmp crude but working tostring feature
-		out := []
-		for i, value in arr {
-			line := ''
-			if (this.isArray(value)) {
-				line .= this.stringify(value)
-			}
-			else if (ObjectUtilities.isObject(value)) {
-				line .= ObjectUtilities.stringify(value)
-			}
-			else {
-				line .= value
-			}
-			line .= '`n'
+	; 		out.Push(line)
+	; 	}
 
-			out.Push(line)
-		}
-
-		return ArrayUtilities.join(out, '')
-	}
+	; 	return ArrayUtilities.join(out, '')
+	; }
 
 	/** 
 	 * @param {Array} arr The array to check

@@ -18,27 +18,27 @@ class ObjectUtilities extends CollectionBase {
 	 * @param {Boolean} isValue Is this object a value iside another object?
 	 * @returns {String} A string representation of the object
 	*/
-	stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
-		;? tmp crude but working tostring feature
-		out := []
-		for key, value in obj.OwnProps() {
-			line := key ': '
-			if (ArrayUtilities.isArray(value)) {
-				line .= ArrayUtilities.stringify(value)
-			}
-			else if (this.isObject(value)) {
-				line .= this.stringify(value)
-			}
-			else {
-				line .= value
-			}
-			line .= '`n'
+	; stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
+	; 	;? tmp crude but working tostring feature
+	; 	out := []
+	; 	for key, value in obj.OwnProps() {
+	; 		line := key ': '
+	; 		if (ArrayUtilities.isArray(value)) {
+	; 			line .= ArrayUtilities.stringify(value)
+	; 		}
+	; 		else if (this.isObject(value)) {
+	; 			line .= this.stringify(value)
+	; 		}
+	; 		else {
+	; 			line .= value
+	; 		}
+	; 		line .= '`n'
 
-			out.Push(line)
-		}
+	; 		out.Push(line)
+	; 	}
 
-		return ArrayUtilities.join(out, '')
-	}
+	; 	return ArrayUtilities.join(out, '')
+	; }
 
 	
 
