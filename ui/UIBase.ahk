@@ -2,7 +2,7 @@
 
 #Include UIWindow.ahk
 #Include UIElementBase.ahk
-#Include flagDictonary.ahk
+#Include flagHandler.ahk
 
 class UIBase {
 	__New() {
