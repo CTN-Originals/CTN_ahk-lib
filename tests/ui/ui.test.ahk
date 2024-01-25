@@ -23,25 +23,25 @@ Global btn := inst.elements.Add.Button()
 Global txt := inst.elements.Add.Text()
 txt.setContent('Hello World')
 
-; console.log('flags: ' getFlags(inst.window))
-; console.log('flags: ' getFlags(btn))
-; console.log('flags: ' getFlags(txt))
+console.log('flags win: ' getFlags(inst.window))
+console.log('flags btn: ' getFlags(btn))
+console.log('flags txt: ' getFlags(txt))
 
 
-inst.gui.SetFont('s20 cRed', 'Impact')
-inst.gui.AddText('x10 y10', 'Hello World!')
-inst.gui.SetFont('s20 cGreen w300', 'Verdana')
-inst.gui.AddText('x10 y+10', 'Hello World!')
-inst.gui.SetFont('s20 cBlue norm bold italic underline strike', '')
-inst.gui.AddText('x10 y+10', 'Hello World!')
+; inst.gui.SetFont('s20 cRed', 'Impact')
+; inst.gui.AddText('x10 y10', 'Hello World!')
+; inst.gui.SetFont('s20 cGreen w300', 'Verdana')
+; inst.gui.AddText('x10 y+10', 'Hello World!')
+; inst.gui.SetFont('s20 cBlue norm bold italic underline strike', '')
+; inst.gui.AddText('x10 y+10', 'Hello World!')
 
 ui.show()
-inst.gui.Minimize()
+; inst.gui.Minimize()
 WinSetTransparent(100, wind.hwnd)
 ; inst.gui.Minimize()
 
-console.log(txt)
+; console.log(txt)
 console.log(inst.elements)
 
-console.log(ui)
-console.log(inst.window.__Get()) ;? returns the hwnd
+; console.log(ui)
+; console.log(inst.window.__Get()) ;? returns the hwnd
