@@ -11,47 +11,6 @@ class ObjectUtilities extends CollectionBase {
 		super.__Init('Object')
 	}
 
-	; RecursionStorage {
-	; 	get {
-	; 		OutputDebug('[OBJECT] get storage | Size: ' this._recursionStorage.Length '`n')
-	; 		return this._recursionStorage
-	; 	}
-	; 	set {
-	; 		OutputDebug('[OBJECT] set storage | Size: ' this._recursionStorage.Length ' + 1' '`n')
-	; 		if (Value == 'CLEAR') {
-	; 			OutputDebug('---- [OBJECT] Clearing RecursionStorage ---- `n`n')
-	; 			this.RecursionStorageHistory := this._recursionStorage
-	; 			this._recursionStorage := []
-	; 		}
-	; 		else {
-	; 			this._recursionStorage.Push(Value)
-	; 		}
-	; 	}
-	; }
-
-	; _checkRecursion(obj, depth := 0) {
-		
-	; 	loop(this.RecursionStorage.Length) {
-	; 		i := (this.RecursionStorage.length - 0) - A_Index
-	; 		if (i < 1) {
-	; 			continue
-	; 		}
-	; 		target := this.RecursionStorage[i]
-	; 		; console.log(Type(obj) ' - ' Type(target))
-	; 		if (obj == target) {
-	; 			;! RECURSION
-	; 			; console.log('[OBJECT] ! RECURSION !')
-	; 			return true
-	; 		}
-	; 		else if (depth == 0) {
-	; 			return this._checkRecursion(obj, depth + 1)
-	; 		}
-	; 	}
-	; 	this.RecursionStorage := obj
-
-	; 	return false
-	; }
-
 	/** 
 	 * @param {Object} obj The object to stringify
 	 * @param {Number} indent The number of indents to use
@@ -59,86 +18,27 @@ class ObjectUtilities extends CollectionBase {
 	 * @param {Boolean} isValue Is this object a value iside another object?
 	 * @returns {String} A string representation of the object
 	*/
-	stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
-		
-		static recursionDetected := this._checkRecursion(obj) ;? check for a recursion
-		endOfFunction := (init := initialCall, rec := false) => ((this.RecursionStorage := (init) ? 'CLEAR' : 'null') (recursionDetected := rec))
-		if (recursionDetected) {
-			endOfFunction()
-			return '-{ <recursion> }-'
-		}
+	; stringify(obj, indent := 0, indentString := "  ", isValue := false, initialCall := true) {
+	; 	;? tmp crude but working tostring feature
+	; 	out := []
+	; 	for key, value in obj.OwnProps() {
+	; 		line := key ': '
+	; 		if (ArrayUtilities.isArray(value)) {
+	; 			line .= ArrayUtilities.stringify(value)
+	; 		}
+	; 		else if (this.isObject(value)) {
+	; 			line .= this.stringify(value)
+	; 		}
+	; 		else {
+	; 			line .= value
+	; 		}
+	; 		line .= '`n'
 
-		if (!this.isObject(obj)) {
-			endOfFunction()
-			return ''
-		}
+	; 		out.Push(line)
+	; 	}
 
-		out := []
-		if (this.keys(obj).Length > 0) {
-			if (!isValue) {
-				out.Push(StrUtils.repeat(indentString, indent) "{`n")
-			}
-			else {
-				out.Push("{`n")
-			}
-		}
-		else {
-			endOfFunction()
-			return '{ }'
-		}
-
-		keys := this.keys(obj)
-		
-		for k, v in keys {
-			line := ''
-			key := keys[k]
-			value := obj.%key%
-			line .= StrUtils.repeat(indentString, indent + 1) key ": "
-
-			if (recursionDetected) {
-				line .= '{ <recursion> }'
-				endOfFunction()
-				; continue
-			}
-			else if (Type(value) == 'Gui') {
-				line .= this.stringify(this.getGuiObject(value), indent + 1, indentString, true, false)
-			}
-			else if (ObjUtils.isObject(value)) {
-				line .= this.stringify(
-					value,
-					indent + 1,
-					indentString,
-					!!(value.Base.__Class),
-					false
-				)
-			}
-			else if (ArrayUtilities.isArray(value)) {
-				recursionDetected := ArrayUtilities._checkRecursion(value)
-				if (recursionDetected) {
-					; endOfFunction()
-					return '[{ <recursion> }]'
-				}
-				else {
-					line .= ArrayUtilities.stringify(value, indent + 1, indentString, initialCall)
-				}
-			}
-			else {
-				line .= value
-			}
-
-			if (this.keys(obj)[this.keys(obj).Length] != key) { ;? Check if this is the last key of the object
-				line .= ",`n"
-			}
-			else {
-				line .= "`n"
-			}
-			out.Push(line)
-		}
-		out.Push(StrUtils.repeat(indentString, indent) "}")
-
-		endOfFunction()
-		return ArrayUtilities.join(out, '')
-	}
+	; 	return ArrayUtilities.join(out, '')
+	; }
 
 	
 
