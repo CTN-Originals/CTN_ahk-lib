@@ -26,6 +26,13 @@ class UIElementBase {
 			this.collection.%elementName%.Push(element)
 		}
 	}
+
+	drawAll() {
+		for i, element in this.list {
+			element.draw()
+		}
+	}
+}
 }
 
 class ElementInstance {
