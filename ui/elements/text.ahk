@@ -15,8 +15,6 @@ class Text extends ElementInstance {
 	*/
 	setContent(input) {
 		this.content := input
-		this.x := this.x + 20
-		this.y := this.y + 50
 		this.draw()
 	}
 }
