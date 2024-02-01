@@ -43,6 +43,10 @@ class CollectionBase {
 		iterable := (isObj) ? coll.OwnProps() : coll ;? Make the passed in coll iterable 
 		brackets := getBracketPair(coll)
 		
+		if (!ObjectUtilities.isObject(iterable)) {
+			OutputDebug('(' Type(this) ') ERROR: Type ' Type(iterable) ' is not enumerable`n')
+			return out
+		}
 		if (displayHolder && initialCall) {
 			out := Type(coll) ' ' brackets[1] '`n'
 			indent++
