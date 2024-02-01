@@ -51,10 +51,15 @@ class ConsoleInstance extends ConsoleBase {
 
 	_log(message, options*) {
 		out := ''
+		typeString := Type(message)
+		if (InStr(typeString, 'Gui.')) {
+			typeString := 'Gui' ;?? Does this cuase unexpected matches that should not be matched?
+		}
+
 
 		switchMatch := true
-		switch Type(message) {
-			case 'Gui': 
+		switch typeString {
+			case 'Gui':
 				out := Type(message) ' ' ObjectUtilities.stringify(ObjectUtilities.getGuiObject(message)) "`n"
 			default: 
 				switchMatch := false

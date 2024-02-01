@@ -133,10 +133,20 @@ class ObjectUtilities extends CollectionBase {
 	 * @returns {object} an object that can be enumerated (so just a normal object)
 	*/
 	getGuiObject(g) {
-		return {
-			Title: g.Title,
-			Hwnd: g.Hwnd
+		out := {}
+		keyNames := [
+			'Hwnd', 'Title', 'Text', 'Name'
+		]
+
+		for i, key in keyNames {
+			value := ''
+			try value := g.%key%
+			if (value) {
+				out.%key% := value
+			}
 		}
+		
+		return out
 	}
 }
 
