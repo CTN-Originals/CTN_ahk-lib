@@ -33,6 +33,29 @@ class UIElementBase {
 		}
 	}
 }
+class AddElement {
+	__New(elementBase) {
+		this.elementBase := elementBase
+	}
+
+	_validateNew(element) {
+		element.setParent(this.elementBase)
+		this.elementBase.registerElement(element)
+	}
+
+	/* @returns {Button} The created text element */
+	Button() {
+		element := Button()
+		this._validateNew(element)
+		return element
+	}
+
+	/* @returns {Text} The created text element */
+	Text() {
+		element := Text()
+		this._validateNew(element)
+		return element
+	}
 }
 
 class ElementInstance {
@@ -79,30 +102,7 @@ class ElementInstance {
 	}
 }
 
-class AddElement {
-	__New(elementBase) {
-		this.elementBase := elementBase
-	}
 
-	_validateNew(element) {
-		element.setParent(this.elementBase)
-		this.elementBase.registerElement(element)
-	}
-
-	/* @returns {Button} The created text element */
-	Button() {
-		element := Button()
-		this._validateNew(element)
-		return element
-	}
-
-	/* @returns {Text} The created text element */
-	Text() {
-		element := Text()
-		this._validateNew(element)
-		return element
-	}
-}
 
 
 class Font {
