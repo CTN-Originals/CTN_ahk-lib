@@ -21,10 +21,13 @@ wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
 Global inst := ui.getInst()
 Global btn := inst.elements.Add.Button()
 Global txt := inst.elements.Add.Text()
-txt.setContent('Hello World')
 
-txt.draw()
+txt.content := 'Hello World!'
+btn.y := 40
 
+inst.elements.drawAll()
+
+; txt.setContent('Hello World')
 ; console.log('flags win: ' getFlags(inst.window))
 ; console.log('flags btn: ' getFlags(btn))
 ; console.log('flags txt: ' getFlags(txt))

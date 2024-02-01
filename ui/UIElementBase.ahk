@@ -43,6 +43,7 @@ class AddElement {
 		this.elementBase.registerElement(element)
 	}
 
+	;TODO make it possible to pass in params
 	/* @returns {Button} The created text element */
 	Button() {
 		element := Button()
@@ -95,10 +96,11 @@ class ElementInstance {
 		this.element := instance.gui.%addMethod%(flags, this.content) ;> render the element and store the result in a variable
 		this.hwnd := this.element.hwnd ;? get the hwnd of the element
 
-		console.log(typeName)
-		console.log(flags)
-		console.log(this.element)
-		console.log(this.__Get())
+		; console.log(typeName)
+		; console.log(flags)
+		; console.log(instance.gui)
+		; console.log(this.element)
+		; console.log(this.__Get())
 	}
 }
 
