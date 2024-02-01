@@ -36,6 +36,9 @@ class ElementInstance {
 		this.height := height
 
 		this.hwnd := 0
+		this.element := unset
+
+		this.parent := unset ;UIElementBase(UIInstance) ;? placeholder parent to avoid unassigned errors
 	}
 
 	__Get() {
@@ -44,6 +47,28 @@ class ElementInstance {
 
 	setParent(input) {
 		this.parent := input
+	}
+	
+	draw() {
+		;TODO make dynamic conditions for when the element already exists but draw is fired anyway
+			;- if element exists
+				;- if content changed and not anything else 
+					;> guiControl text
+				;- else if xywh changed
+					;> guiControl move
+		
+		typeName := Type(this) ;? the type name, used to call the gui add element method
+		flags := getFlags(this) ;? the flags that apply to this element
+		instance := this.parent.parent ;? the parent instance that holds the gui
+		addMethod := 'Add' typeName ;? store the method to add a gui element in one variable to simply call later
+
+		this.element := instance.gui.%addMethod%(flags, this.content) ;> render the element and store the result in a variable
+		this.hwnd := this.element.hwnd ;? get the hwnd of the element
+
+		console.log(typeName)
+		console.log(flags)
+		console.log(this.element)
+		console.log(this.__Get())
 	}
 }
 

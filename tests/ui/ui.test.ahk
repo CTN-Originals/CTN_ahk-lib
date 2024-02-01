@@ -13,19 +13,21 @@ Global ui := UIBase()
 
 Global inst := ui.getInst(1)
 Global wind := inst.window
-wind.x := 1920 + 4
+; wind.x := 1920 + 4
+; wind.x := (- + wind.width - 10) ;? When only there is a second monitoron the left
 wind.y := (1080 - 70) - wind.height - 10
-; wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
-wind.x := (- + wind.width - 10) ;? When only there is a second monitoron the left
+wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
 
 Global inst := ui.getInst()
 Global btn := inst.elements.Add.Button()
 Global txt := inst.elements.Add.Text()
 txt.setContent('Hello World')
 
-console.log('flags win: ' getFlags(inst.window))
-console.log('flags btn: ' getFlags(btn))
-console.log('flags txt: ' getFlags(txt))
+txt.draw()
+
+; console.log('flags win: ' getFlags(inst.window))
+; console.log('flags btn: ' getFlags(btn))
+; console.log('flags txt: ' getFlags(txt))
 
 
 ; inst.gui.SetFont('s20 cRed', 'Impact')
@@ -41,7 +43,7 @@ WinSetTransparent(100, wind.hwnd)
 ; inst.gui.Minimize()
 
 ; console.log(txt)
-console.log(inst.elements)
+; console.log(inst.elements)
 
 ; console.log(ui)
 ; console.log(inst.window.__Get()) ;? returns the hwnd
