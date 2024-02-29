@@ -15,6 +15,8 @@ class FlagField {
 		switch this.type {
 			case 'bool':
 				out := (value) ? '+' this.prefix : '-' this.prefix
+			case 'noValue':
+				out := this.prefix
 			default:
 				out := this.prefix value
 		}
@@ -30,10 +32,21 @@ Global flags := {
 		height: FlagField('h'),
 	},
 	window: {},
+	font: {
+		size: FlagField('s'),
+		color: FlagField('c'),
+		width: FlagField('w'),
+		style: {
+			bold: FlagField('bold', 'noValue'),
+			italic: FlagField('italic', 'noValue'),
+			underline: FlagField('underline', 'noValue'),
+			strike: FlagField('strike', 'noValue'),
+		}
+	},
 	button: {},
 	text: {
 		center: FlagField('center', 'bool')
-	}
+	},
 }
 
 ;? If the name of the class is not the same as the name of the field in flags, it will be defined here
@@ -43,8 +56,6 @@ Global flagClassPairs := {
 
 getFlags(obj) {
 	global
-	out := []
-	keys := ObjectUtilities.keys(obj)
 	field := StrLower(Type(obj))
 
 	if (!ObjectUtilities.hasKey(flags, field)) {
@@ -57,15 +68,36 @@ getFlags(obj) {
 		}
 	}
 	
-	flagObject := flags.default.Clone()
+	flagObject := (field != 'font') ? flags.default.Clone() : {}
 	if (field != 'default') {
 		flagObject := ObjectUtilities.merge(flagObject, flags.%field%, true)
-
 	}
-
-	for key, fieldDefinition in flagObject.OwnProps() {
-		out.Push(fieldDefinition.__Get(obj.%key%))
-	}
+	
+	flagArray := resolveFlagObject(obj, flagObject)
 	flagObject := {}
-	return ArrayUtilities.join(out, ' ')
+	return ArrayUtilities.join(flagArray, ' ')
+}
+
+
+/** Puts all flags together from the flag object into an array
+ * @param {Object} obj the object to get the value from with the key
+ * @param {Object} flagObject the flag object conataining all the flag fields
+*/
+resolveFlagObject(obj, flagObject) {
+	out := []
+	for key, fieldDefinition in flagObject.OwnProps() {
+		;? if obj doesnt contain key, key is likely unset and should be omited
+		if (!ObjectUtilities.hasKey(obj, key))
+			continue
+
+		;? if type is not flag field, its likely an object containing more flag fields
+		if (Type(fieldDefinition) != 'FlagField') {
+			out.Push(resolveFlagObject(obj.%key%, fieldDefinition)*)
+		}
+		else {
+			out.Push(fieldDefinition.__Get(obj.%key%))
+		}
+	}
+
+	return out
 }

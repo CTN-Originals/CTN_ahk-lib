@@ -93,7 +93,13 @@ class ElementInstance {
 		instance := this.parent.parent ;? the parent instance that holds the gui
 		addMethod := 'Add' typeName ;? store the method to add a gui element in one variable to simply call later
 
-		this.element := instance.gui.%addMethod%(flags, this.content) ;> render the element and store the result in a variable
+		;? if there is a font field, apply the font to the gui first.
+		if (ObjectUtilities.hasKey(this, 'font')) {
+			;TODO check if this font is already active and continue if it is the case
+			this.font.Apply(this.parent.parent)
+		}
+
+		this.element := instance.gui.%addMethod%(flags, this.content) ;? render the element and store the result in a variable
 		this.hwnd := this.element.hwnd ;? get the hwnd of the element
 
 		; console.log(typeName)
@@ -104,25 +110,22 @@ class ElementInstance {
 	}
 }
 
-
-
-
 class Font {
 	/** 
 	 * @param {String} name The name of the font
 	 * @param {Integer} size The size of the font
 	 * @param {String} color The color of the font in hex (without the '#')
 	*/
-	__New(name := 'Verdana', size := 12, color := 'FFFFFF') {
+	__New(name := 'Verdana', size := 12, color := '000000') {
 		this.name := name
 		this.size := size
 		this.color := color
-		this.width := 0 ;? 0 is null and it causes the width flag to be omited
+		this.width := unset
 
 		this.style := {
-			bold: false,
+			bold: true,
 			italic: false,
-			underline: false,
+			underline: true,
 			strike: false,
 		}
 	}
@@ -131,7 +134,9 @@ class Font {
 	 * @description Apply the font to the target instance
 	 * @param {UIInstance} target The target UI Instance
 	*/
-	Apply(target) {
-		target.gui.SetFont()
+	apply(target) {
+		target.gui.SetFont('norm ' getFlags(this), this.name)
 	}
+
+	;* SetFont('s20 cBlue norm bold italic underline strike', '')
 }
