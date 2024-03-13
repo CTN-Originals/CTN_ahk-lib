@@ -19,7 +19,9 @@ wind.y := (1080 - 70) - wind.height - 10
 wind.x := 1920 - wind.width - 15 ;? When only 1 monitor is used
 
 Global inst := ui.getInst()
+btnRect := Rect(10, 10)
 Global btn := inst.elements.Add.Button()
+txtRect := Rect({x: 2, y: 40})
 Global txt := inst.elements.Add.Text()
 
 txt.content := 'Hello World!'

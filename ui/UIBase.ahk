@@ -3,6 +3,7 @@
 #Include UIWindow.ahk
 #Include UIElementBase.ahk
 #Include flagHandler.ahk
+#Include classes\rect.ahk
 
 class UIBase {
 	__New() {
