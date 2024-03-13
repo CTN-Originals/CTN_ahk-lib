@@ -24,6 +24,7 @@ Global btn := inst.elements.Add.Button()
 txtRect := Rect({x: 2, y: 40})
 Global txt := inst.elements.Add.Text()
 
+txt.font := Font('Arial', 20, 'ff0000')
 txt.content := 'Hello World!'
 btn.y := 40
 
